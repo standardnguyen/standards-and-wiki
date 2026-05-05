@@ -72,8 +72,11 @@ Protocols are stored in `protocols/` as individual files. When a protocol is inv
 | 5 | Session log setup — create session logging infrastructure for a new project | `protocols/5-session-log-setup.md` |
 | 6 | Homepage coverage — check that every wiki page is reachable from `home.md` | `protocols/6-homepage-coverage.md` |
 | 7 | Commit & ship — commit, push, create/update PR, then update session logs if applicable | `protocols/7-commit-and-ship.md` |
+| 8 | Design project sub-protocols — codify recurring patterns inside a project as project-scoped sub-protocols | `protocols/8-design-project-subprotocols.md` |
 
 <!-- Customize: add your own protocols as you develop repeatable workflows. -->
+
+**Root protocols vs. sub-protocols.** The numbered protocols above are root-level — they apply across the whole wiki. Individual sub-projects may define their own **sub-protocols** in their project-local `CLAUDE.md` (or in a `subprotocols/` directory), numbered independently within the project namespace. A sub-project's "Sub-Protocol 0" is unrelated to root Protocol 0. If a project defines sub-protocols, label them "Sub-Protocol N" rather than "Protocol N" to avoid collision with the root numbering. See Protocol 8 for how to design and register them.
 
 ## Session Logging
 

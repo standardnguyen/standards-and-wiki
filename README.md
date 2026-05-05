@@ -8,7 +8,7 @@ Based on a production wiki that manages 100+ interconnected pages across infrast
 
 - **`CLAUDE.md`** — Project instructions that Claude Code loads automatically. Defines conventions, Git workflow, domain context, and protocol index.
 - **Style guide** — Adapted from Wikipedia's Manual of Style for a personal technical wiki. Covers voice, tense, page types, words to avoid.
-- **7 protocols** — Structured maintenance workflows invoked by saying "run Protocol N":
+- **8 protocols** — Structured maintenance workflows invoked by saying "run Protocol N":
   1. **Harmonize** — Full editorial pass to fix contradictions, anachronisms, tone
   2. **Spot-Check** — Random-sample contradiction detection across page pairs
   3. **Verify** — Generate commands to check wiki claims against live systems
@@ -16,6 +16,7 @@ Based on a production wiki that manages 100+ interconnected pages across infrast
   5. **Session Log Setup** — Create logging infrastructure for a new project
   6. **Homepage Coverage** — Ensure every wiki page is reachable from the homepage
   7. **Commit & Ship** — Stage, commit, push, create PR, update session logs
+  8. **Design Project Sub-Protocols** — Codify recurring patterns inside a project as sub-protocols
 - **Homepage crawl script** — Python BFS crawler that finds orphaned pages and broken links
 - **Session logging pattern** — Append-only decision logs that prevent wiki drift across sessions
 - **Example pages** — Starter homepage, infrastructure overview, and style guide
@@ -95,6 +96,7 @@ your-wiki/
 │   ├── 5-session-log-setup.md
 │   ├── 6-homepage-coverage.md
 │   ├── 7-commit-and-ship.md
+│   ├── 8-design-project-subprotocols.md
 │   └── scripts/
 │       └── homepage-crawl.py
 ├── infrastructure/            <- Example section (rename/replace)
