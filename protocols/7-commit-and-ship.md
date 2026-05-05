@@ -52,16 +52,13 @@ EOF
 
 If multiple logical changes are present, create separate commits for each.
 
-### 4. Rebase and Push
-
-Ensure the branch includes the latest merged changes before pushing:
+### 4. Push
 
 ```bash
-git fetch origin main && git rebase origin/main
 git push origin dev
 ```
 
-If the rebase has conflicts, resolve them before pushing. Never force-push without user approval.
+**Do not rebase as part of this protocol.** Concurrent sessions, cron jobs, or background tools may modify the working tree, and a rebase can silently bundle unrelated work or rewrite history that's already on the remote. If `git push origin dev` is rejected non-fast-forward and a rebase is genuinely needed (e.g. `origin/dev` has fallen behind `origin/main` and `main` has commits `dev` doesn't), **stop and ask the user to run the rebase themselves**. Do not force-push without explicit user approval.
 
 ### 5. Create or Update Pull Request
 

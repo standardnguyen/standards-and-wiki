@@ -34,9 +34,8 @@ This is a personal wiki maintained as markdown files, serving as documentation f
 
 - **Default branch: `dev`** — Work on the `dev` branch unless told otherwise. Simply commit to `dev` and push.
 - If `dev` does not exist locally, create it from `main`: `git checkout -b dev origin/main`
-- If `dev` already exists, make sure it's up to date: `git fetch origin main && git rebase origin/main`
+- **Never rebase or bulk-stage without explicit user permission.** Concurrent sessions and background tools may modify the working tree, so `git rebase`, `git add .`, `git add -A`, and `git add -u` can silently bundle unrelated work into your commit. Always enumerate the exact paths you touched, run `git diff --cached --stat` before every commit to verify the file list is yours, and `git restore --staged <path>` on anything unfamiliar.
 - When changes are ready for review, create or update a pull request from `dev` to `main`
-- Before pushing, always `git fetch origin main && git rebase origin/main` to ensure the branch includes the latest merged changes
 - Never push directly to `main`; all changes go through PRs for human review
 
 <!-- Customize: update the PR creation commands for your Git hosting platform.
@@ -50,6 +49,15 @@ Forgejo/Gitea example:
     -H "Authorization: token $TOKEN" \
     -d '{"title": "...", "body": "...", "head": "dev", "base": "main"}'
 -->
+
+## Sub-CLAUDE.md Files
+
+Project subdirectories may have their own `CLAUDE.md` with rules that only apply inside that subtree. **These only auto-load when the working directory is inside the project dir** — if you're editing files under `projects/<project>/` from the repo root, the project's `CLAUDE.md` will NOT have been loaded.
+
+Before making non-trivial edits inside a project subtree, run `ls <path>/CLAUDE.md` (and walk up the path checking parent dirs) and `Read` any that exist.
+
+<!-- Customize: as projects accumulate sub-CLAUDE.md files, list them here so a session
+     starting at the repo root knows which ones to skim before working in those areas. -->
 
 ## Protocols
 
