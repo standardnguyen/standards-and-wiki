@@ -18,7 +18,8 @@ This is a personal wiki maintained as markdown files, serving as documentation f
 - `meta/` — Wiki meta-documentation
   - `style-guide.md` — Writing conventions
   - `ai-managed-wiki.md` — How Claude Code maintains this wiki
-- `protocols/` — Structured maintenance workflows (1-7)
+  - `human-readability.md` — Criteria for documents that must remain executable without an LLM
+- `protocols/` — Structured maintenance workflows (1-9)
 
 <!-- Customize: update this to match your actual directory structure as it grows. -->
 
@@ -73,6 +74,7 @@ Protocols are stored in `protocols/` as individual files. When a protocol is inv
 | 6 | Homepage coverage — check that every wiki page is reachable from `home.md` | `protocols/6-homepage-coverage.md` |
 | 7 | Commit & ship — commit, push, create/update PR, then update session logs if applicable | `protocols/7-commit-and-ship.md` |
 | 8 | Design project sub-protocols — codify recurring patterns inside a project as project-scoped sub-protocols | `protocols/8-design-project-subprotocols.md` |
+| 9 | Human-readability audit — validate that protocols and reference pages are executable without an LLM in the loop | `protocols/9-human-readability-audit.md` |
 
 <!-- Customize: add your own protocols as you develop repeatable workflows. -->
 

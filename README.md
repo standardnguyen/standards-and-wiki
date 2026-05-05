@@ -8,7 +8,7 @@ Based on a production wiki that manages 100+ interconnected pages across infrast
 
 - **`CLAUDE.md`** — Project instructions that Claude Code loads automatically. Defines conventions, Git workflow, domain context, and protocol index.
 - **Style guide** — Adapted from Wikipedia's Manual of Style for a personal technical wiki. Covers voice, tense, page types, words to avoid.
-- **8 protocols** — Structured maintenance workflows invoked by saying "run Protocol N":
+- **9 protocols** — Structured maintenance workflows invoked by saying "run Protocol N":
   1. **Harmonize** — Full editorial pass to fix contradictions, anachronisms, tone
   2. **Spot-Check** — Random-sample contradiction detection across page pairs
   3. **Verify** — Generate commands to check wiki claims against live systems
@@ -17,6 +17,7 @@ Based on a production wiki that manages 100+ interconnected pages across infrast
   6. **Homepage Coverage** — Ensure every wiki page is reachable from the homepage
   7. **Commit & Ship** — Stage, commit, push, create PR, update session logs
   8. **Design Project Sub-Protocols** — Codify recurring patterns inside a project as sub-protocols
+  9. **Human-Readability Audit** — Validate that protocols and reference pages are executable without an LLM in the loop
 - **Homepage crawl script** — Python BFS crawler that finds orphaned pages and broken links
 - **Session logging pattern** — Append-only decision logs that prevent wiki drift across sessions
 - **Example pages** — Starter homepage, infrastructure overview, and style guide
@@ -87,7 +88,8 @@ your-wiki/
 ├── home.md                    <- Wiki homepage (edit this second)
 ├── meta/
 │   ├── style-guide.md         <- Writing conventions
-│   └── ai-managed-wiki.md     <- How this wiki works
+│   ├── ai-managed-wiki.md     <- How this wiki works
+│   └── human-readability.md   <- Criteria for human-executable docs (Protocol 9)
 ├── protocols/
 │   ├── 1-harmonize.md
 │   ├── 2-spot-check.md
@@ -97,6 +99,7 @@ your-wiki/
 │   ├── 6-homepage-coverage.md
 │   ├── 7-commit-and-ship.md
 │   ├── 8-design-project-subprotocols.md
+│   ├── 9-human-readability-audit.md
 │   └── scripts/
 │       └── homepage-crawl.py
 ├── infrastructure/            <- Example section (rename/replace)
