@@ -126,3 +126,45 @@ accurate documentation. Examples:
 ## Python
 
 Always use virtual environments (`python3 -m venv`) for Python projects. Never `pip install` system-wide or use `--break-system-packages`.
+
+## Doing Tasks
+
+Coding-behavior rules. These are also encoded in the Claude Code harness system prompt, but pinned here as durable insurance against harness drift.
+
+**0. Gather context before acting.** Synthetic RAG is a real cost-saver. Err toward *more* context-gathering than less, especially on anything non-trivial.
+
+- Before non-trivial work, identify the project/domain and check for a sub-`CLAUDE.md` — read it, even if CWD wouldn't auto-load it. Walk up the directory tree if unsure.
+- **Re-read protocols on invocation.** When you're about to execute any numbered protocol, read `protocols/<N>-*.md` from disk in the same response — even if you've executed it before. Protocols change; cached mental models drift. The failure mode this rule prevents: an agent executes a protocol from memory, the file has been edited, and the run ships against the stale procedure.
+- **Grep first, even when you're sure.** For any proper noun the user mentions that you don't already have loaded context for — service names, paths, container names, project names, tool names — grep the wiki *before* deciding what it refers to. Do **not** pre-judge ambiguity; the failure mode is exactly the case where you confidently assumed the wrong noun class. **The wiki is your infinite context.** The cost of one extra grep is ~30s; the cost of acting on a wrong assumption is ~5min plus a wrong-tree investigation the user then has to redirect.
+- **For incident-shape prompts, wiki first, live-state second.** When the user says something is failing, filling up, erroring, broken, slow, or not working — grep the wiki for the relevant `_index.md` / runbook / session-log entries *before* spinning up live-state probes. The wiki captures procedures, lessons-learned, and prior-incident write-ups that you do not have internally. The LLM bias toward "tools = visible progress, docs = invisible" is real; counter it explicitly.
+- Skim the 1-2 most recent relevant session log entries before doing project work.
+- If the task is *broad* or spans multiple areas (3+ likely queries), spawn an Explore subagent rather than serially grepping yourself.
+- Bias: *"I'd rather spend 30 seconds on a grep than 5 minutes acting on a bad assumption."*
+- Trivial-task gate: skip the preflight for clearly-scoped one-shots ("rename this variable", "what's in this file"). The preflight is for work whose scope touches the wider knowledge graph.
+
+**1. Think before coding.** Don't assume. Don't hide confusion. Surface tradeoffs.
+
+- State your assumptions explicitly. If uncertain, ask.
+- If multiple reasonable interpretations exist, present them — don't silently pick one. The cost of one clarifying question is lower than the cost of building the wrong thing.
+- If a simpler approach exists, say so. Push back when warranted.
+- If something is unclear, stop. Name what's confusing. Ask.
+
+**2. Simplicity first.** Minimum code that solves the problem. Nothing speculative.
+
+- No features beyond what was asked. No abstractions for single-use code. No "flexibility" or "configurability" that wasn't requested.
+- No error handling for impossible scenarios. Trust internal code and framework guarantees; only validate at system boundaries.
+- If you write 200 lines and it could be 50, rewrite it.
+
+**3. Surgical changes.** Touch only what you must. Clean up only your own mess.
+
+- Don't "improve" adjacent code, comments, or formatting in passing.
+- Don't refactor things that aren't broken.
+- Match the existing style even if you'd write it differently.
+- Every changed line should trace directly to what was asked.
+- When your edits orphan an import/variable/function, clean those up — but don't sweep pre-existing dead code unless asked.
+
+**4. Goal-driven execution.** Define success criteria. Loop until verified.
+
+Transform tasks into verifiable goals: "Add validation" → "Write tests for invalid inputs, then make them pass." "Fix the bug" → "Write a test that reproduces it, then make it pass." For multi-step tasks, state a brief plan with per-step verification before executing.
+
+Strong success criteria let Claude loop independently. Weak criteria ("make it work") force constant clarification.

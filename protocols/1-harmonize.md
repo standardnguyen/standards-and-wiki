@@ -8,7 +8,13 @@ Perform a full wiki harmonization pass across a specified topic area.
 
 ## Procedure
 
-1. Read every page that touches the topic area (use grep to find cross-references)
+1. Read every page that touches the topic area (use grep to find cross-references). **Scope is not just wiki prose** — include all surfaces where the topic's behavior may be described or routed:
+   - **Sibling protocol files** (`protocols/N-*.md`) — procedures that may now reference outdated behavior
+   - **Skill descriptions and bodies** (`~/.claude/skills/`, project `.claude/skills/`, or any system-reminder skill list at session start) — descriptions are always-loaded and paraphrase behavior; bodies hold the procedure
+   - **Root `CLAUDE.md`** and any **sub-`CLAUDE.md`** files — sections that describe the rule, routing, or workflow being harmonized
+   - **Settings/config that references the topic** — `.claude/settings*.json` hooks, `.mcp.json`, etc., if the topic is wired into harness behavior
+
+   Greppable cross-references catch these only when they name the changed file/concept by exact phrase. Also skim the *behavioral claims* in each surface for **paraphrased descriptions of the old behavior** — a skill description saying "harmonize folds info into the wiki" won't grep for "Protocol 1" but still goes stale when the procedure changes. A stale description on an always-loaded surface poisons every future session that loads it.
 2. Identify **anachronisms** — statements that were true at time of writing but are now outdated (e.g., "in progress" for completed work, "reserved for future use" for things already in use)
 3. Identify **contradictions** — two pages that disagree about the current state of something
 4. Identify **tone issues** — sections that read as live operator notes rather than encyclopedic documentation. Rewrite in Wikipedia-style third person, past tense for completed events, present tense for current state
