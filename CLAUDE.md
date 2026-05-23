@@ -18,7 +18,8 @@ This is a personal wiki maintained as markdown files, serving as documentation f
 - `meta/` — Wiki meta-documentation
   - `style-guide.md` — Writing conventions
   - `ai-managed-wiki.md` — How Claude Code maintains this wiki
-- `protocols/` — Structured maintenance workflows (1-7)
+  - `human-readability.md` — Criteria for documents that must remain executable without an LLM
+- `protocols/` — Structured maintenance workflows (1-9)
 
 <!-- Customize: update this to match your actual directory structure as it grows. -->
 
@@ -34,9 +35,8 @@ This is a personal wiki maintained as markdown files, serving as documentation f
 
 - **Default branch: `dev`** — Work on the `dev` branch unless told otherwise. Simply commit to `dev` and push.
 - If `dev` does not exist locally, create it from `main`: `git checkout -b dev origin/main`
-- If `dev` already exists, make sure it's up to date: `git fetch origin main && git rebase origin/main`
+- **Never rebase or bulk-stage without explicit user permission.** Concurrent sessions and background tools may modify the working tree, so `git rebase`, `git add .`, `git add -A`, and `git add -u` can silently bundle unrelated work into your commit. Always enumerate the exact paths you touched, run `git diff --cached --stat` before every commit to verify the file list is yours, and `git restore --staged <path>` on anything unfamiliar.
 - When changes are ready for review, create or update a pull request from `dev` to `main`
-- Before pushing, always `git fetch origin main && git rebase origin/main` to ensure the branch includes the latest merged changes
 - Never push directly to `main`; all changes go through PRs for human review
 
 <!-- Customize: update the PR creation commands for your Git hosting platform.
@@ -51,6 +51,15 @@ Forgejo/Gitea example:
     -d '{"title": "...", "body": "...", "head": "dev", "base": "main"}'
 -->
 
+## Sub-CLAUDE.md Files
+
+Project subdirectories may have their own `CLAUDE.md` with rules that only apply inside that subtree. **These only auto-load when the working directory is inside the project dir** — if you're editing files under `projects/<project>/` from the repo root, the project's `CLAUDE.md` will NOT have been loaded.
+
+Before making non-trivial edits inside a project subtree, run `ls <path>/CLAUDE.md` (and walk up the path checking parent dirs) and `Read` any that exist.
+
+<!-- Customize: as projects accumulate sub-CLAUDE.md files, list them here so a session
+     starting at the repo root knows which ones to skim before working in those areas. -->
+
 ## Protocols
 
 Protocols are stored in `protocols/` as individual files. When a protocol is invoked (e.g., "run Protocol 2"), read the corresponding file before executing.
@@ -64,8 +73,12 @@ Protocols are stored in `protocols/` as individual files. When a protocol is inv
 | 5 | Session log setup — create session logging infrastructure for a new project | `protocols/5-session-log-setup.md` |
 | 6 | Homepage coverage — check that every wiki page is reachable from `home.md` | `protocols/6-homepage-coverage.md` |
 | 7 | Commit & ship — commit, push, create/update PR, then update session logs if applicable | `protocols/7-commit-and-ship.md` |
+| 8 | Design project sub-protocols — codify recurring patterns inside a project as project-scoped sub-protocols | `protocols/8-design-project-subprotocols.md` |
+| 9 | Human-readability audit — validate that protocols and reference pages are executable without an LLM in the loop | `protocols/9-human-readability-audit.md` |
 
 <!-- Customize: add your own protocols as you develop repeatable workflows. -->
+
+**Root protocols vs. sub-protocols.** The numbered protocols above are root-level — they apply across the whole wiki. Individual sub-projects may define their own **sub-protocols** in their project-local `CLAUDE.md` (or in a `subprotocols/` directory), numbered independently within the project namespace. A sub-project's "Sub-Protocol 0" is unrelated to root Protocol 0. If a project defines sub-protocols, label them "Sub-Protocol N" rather than "Protocol N" to avoid collision with the root numbering. See Protocol 8 for how to design and register them.
 
 ## Session Logging
 
@@ -113,3 +126,45 @@ accurate documentation. Examples:
 ## Python
 
 Always use virtual environments (`python3 -m venv`) for Python projects. Never `pip install` system-wide or use `--break-system-packages`.
+
+## Doing Tasks
+
+Coding-behavior rules. These are also encoded in the Claude Code harness system prompt, but pinned here as durable insurance against harness drift.
+
+**0. Gather context before acting.** Synthetic RAG is a real cost-saver. Err toward *more* context-gathering than less, especially on anything non-trivial.
+
+- Before non-trivial work, identify the project/domain and check for a sub-`CLAUDE.md` — read it, even if CWD wouldn't auto-load it. Walk up the directory tree if unsure.
+- **Re-read protocols on invocation.** When you're about to execute any numbered protocol, read `protocols/<N>-*.md` from disk in the same response — even if you've executed it before. Protocols change; cached mental models drift. The failure mode this rule prevents: an agent executes a protocol from memory, the file has been edited, and the run ships against the stale procedure.
+- **Grep first, even when you're sure.** For any proper noun the user mentions that you don't already have loaded context for — service names, paths, container names, project names, tool names — grep the wiki *before* deciding what it refers to. Do **not** pre-judge ambiguity; the failure mode is exactly the case where you confidently assumed the wrong noun class. **The wiki is your infinite context.** The cost of one extra grep is ~30s; the cost of acting on a wrong assumption is ~5min plus a wrong-tree investigation the user then has to redirect.
+- **For incident-shape prompts, wiki first, live-state second.** When the user says something is failing, filling up, erroring, broken, slow, or not working — grep the wiki for the relevant `_index.md` / runbook / session-log entries *before* spinning up live-state probes. The wiki captures procedures, lessons-learned, and prior-incident write-ups that you do not have internally. The LLM bias toward "tools = visible progress, docs = invisible" is real; counter it explicitly.
+- Skim the 1-2 most recent relevant session log entries before doing project work.
+- If the task is *broad* or spans multiple areas (3+ likely queries), spawn an Explore subagent rather than serially grepping yourself.
+- Bias: *"I'd rather spend 30 seconds on a grep than 5 minutes acting on a bad assumption."*
+- Trivial-task gate: skip the preflight for clearly-scoped one-shots ("rename this variable", "what's in this file"). The preflight is for work whose scope touches the wider knowledge graph.
+
+**1. Think before coding.** Don't assume. Don't hide confusion. Surface tradeoffs.
+
+- State your assumptions explicitly. If uncertain, ask.
+- If multiple reasonable interpretations exist, present them — don't silently pick one. The cost of one clarifying question is lower than the cost of building the wrong thing.
+- If a simpler approach exists, say so. Push back when warranted.
+- If something is unclear, stop. Name what's confusing. Ask.
+
+**2. Simplicity first.** Minimum code that solves the problem. Nothing speculative.
+
+- No features beyond what was asked. No abstractions for single-use code. No "flexibility" or "configurability" that wasn't requested.
+- No error handling for impossible scenarios. Trust internal code and framework guarantees; only validate at system boundaries.
+- If you write 200 lines and it could be 50, rewrite it.
+
+**3. Surgical changes.** Touch only what you must. Clean up only your own mess.
+
+- Don't "improve" adjacent code, comments, or formatting in passing.
+- Don't refactor things that aren't broken.
+- Match the existing style even if you'd write it differently.
+- Every changed line should trace directly to what was asked.
+- When your edits orphan an import/variable/function, clean those up — but don't sweep pre-existing dead code unless asked.
+
+**4. Goal-driven execution.** Define success criteria. Loop until verified.
+
+Transform tasks into verifiable goals: "Add validation" → "Write tests for invalid inputs, then make them pass." "Fix the bug" → "Write a test that reproduces it, then make it pass." For multi-step tasks, state a brief plan with per-step verification before executing.
+
+Strong success criteria let Claude loop independently. Weak criteria ("make it work") force constant clarification.

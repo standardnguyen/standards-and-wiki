@@ -185,6 +185,12 @@ These complement the formatting rules in CLAUDE.md:
 - Related Pages section at the end of every page.
 - Shell commands with context explaining *why*, not just *what*.
 
+### No "Last Updated" stamps
+
+Don't add `**Last Updated:** <date>` lines to wiki pages. The snapshot-stamp pattern goes stale faster than anyone refreshes it (idea pages, research pages, section indexes — same failure mode). The wiki has *git log + per-file mtime* for actual freshness, session logs for narrative, and explicit `Status:` lines on snapshot/idea pages when the disposition needs to be flagged. Adding a stamp creates work without producing trustworthy signal.
+
+Exception: pages where the stamp is meaningfully scoped + annotated (e.g., an idea page that keeps `"March 2026 (idea page); see /<live-page>/ for current state"` because it points at the live source). If you're writing a stamp, ask first whether a `Status:` line or a session-log link would do the job better.
+
 ## Related Pages
 
 - [AI-Managed Wiki](/en/meta/ai-managed-wiki) — how Claude Code maintains this wiki
