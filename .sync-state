@@ -1,0 +1,3 @@
+last-synced: d9d5aa5f
+synced: 2026-06-08
+note: First run of the .sync-state mechanism. Ported Doing-Tasks rule 5 (claim hygiene) from the personal CLAUDE.md; added the Placeholders-to-Fill glossary and the install.sh scaffolder. The anchor SHA is the personal-wiki commit whose portable content was reviewed for this sync — next run does `git -C <personal-wiki> diff <this-sha>..HEAD` for a precise changed-set.
