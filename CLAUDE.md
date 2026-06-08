@@ -75,6 +75,7 @@ Protocols are stored in `protocols/` as individual files. When a protocol is inv
 | 7 | Commit & ship — commit, push, create/update PR, then update session logs if applicable | `protocols/7-commit-and-ship.md` |
 | 8 | Design project sub-protocols — codify recurring patterns inside a project as project-scoped sub-protocols | `protocols/8-design-project-subprotocols.md` |
 | 9 | Human-readability audit — validate that protocols and reference pages are executable without an LLM in the loop | `protocols/9-human-readability-audit.md` |
+| 10 | Codify drift check — promote a recurring drift pattern into a permanent structural check at commit time | `protocols/10-codify-drift-check.md` |
 
 <!-- Customize: add your own protocols as you develop repeatable workflows. -->
 
@@ -155,13 +156,15 @@ Coding-behavior rules. These are also encoded in the Claude Code harness system 
 - No error handling for impossible scenarios. Trust internal code and framework guarantees; only validate at system boundaries.
 - If you write 200 lines and it could be 50, rewrite it.
 
-**3. Surgical changes.** Touch only what you must. Clean up only your own mess.
+**3. Surgical changes — but propagate completely.** Touch only what you must, but follow every change to its edges.
 
 - Don't "improve" adjacent code, comments, or formatting in passing.
 - Don't refactor things that aren't broken.
 - Match the existing style even if you'd write it differently.
 - Every changed line should trace directly to what was asked.
 - When your edits orphan an import/variable/function, clean those up — but don't sweep pre-existing dead code unless asked.
+- **Propagation rule:** When you change a fact (a count, an address, a status, a name, a date, a price), `grep -rn "<old value>"` across the wiki before committing and update every page that carries the stale value. On a large wiki the same fact often appears in many places; changing one page and leaving the others is the single largest source of wiki drift. If the grep turns up pages you're unsure about, list them for the user rather than skipping silently.
+- **Homeless information rule:** When a session produces a new fact or reference that should be in the wiki but has no obvious page to live on, **do not silently drop it.** Search for candidate pages (`grep -ri` for related terms), and either add it to the best-fit existing page or create a new one. If genuinely unsure where it belongs, surface it to the user: *"I learned X but there's no wiki page for it — should I add it to Y, create a new page, or note it in the session log?"* The failure mode: the agent discovers a fact, notes it internally, and moves on without persisting it anywhere — the next session has no way to know.
 
 **4. Goal-driven execution.** Define success criteria. Loop until verified.
 
