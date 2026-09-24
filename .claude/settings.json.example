@@ -1,0 +1,15 @@
+{
+  "//": "Example Claude Code settings wiring the wiki-rag synthetic-RAG hook. Copy to settings.json (install.sh --apply seeds settings.json from this file when none exists, and never overwrites an existing one). The UserPromptSubmit hook runs wiki-rag.py on every prompt and injects pointer lines to the pages your prompt's entities map to. See protocols/11-wiki-rag-maintenance.md.",
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/wiki-rag.py\""
+          }
+        ]
+      }
+    ]
+  }
+}
