@@ -39,10 +39,19 @@ This is a personal wiki maintained as markdown files, serving as documentation f
   - `human-readability.md` — Criteria for documents that must remain executable without an LLM
   - `mining-session-logs.md` — How to mine old session logs for rules worth codifying
 - `continuations/` — Parked task briefings a cold future session can resume from (Protocols 12/13)
+- `casebook/` — Failure mechanisms: the reasons behind the protocols (start at `casebook/_index.md`)
 - `protocols/` — Structured maintenance workflows (0-14; 0 is the guided first-run setup)
 - `.claude/hooks/wiki-rag.py` — optional synthetic-RAG retrieval hook (see Protocol 11); `.claude/settings.json.example` shows how to wire it
 
 <!-- Customize: update this to match your actual directory structure as it grows. -->
+
+## The Casebook
+
+`casebook/` holds one entry per way that careful work fails while looking correct — a check that can't stop the action, a probe that reads the same whether the thing happened or not, a claim that gets stronger by being written down. Each entry is a mechanism, not an anecdote, and each ends with a **trigger**: the recognizable situation that should make you go looking for it.
+
+Read it once. Then, whenever a protocol step seems like ceremony, check whether there's an entry explaining it — the step is usually there because the obvious version of it fails silently. The index lists the chapters and the entries still to be written.
+
+<!-- Customize: extend the casebook with mechanisms you hit yourself. The entry format is in casebook/_index.md — the value is in the *trigger* line, so that the situation does the reminding. -->
 
 ## Writing Conventions
 

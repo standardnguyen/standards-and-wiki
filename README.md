@@ -1,12 +1,15 @@
 # Personal Wiki Template
 
-A template for running a personal wiki as a Git repository of markdown files, maintained by Claude Code with structured protocols for consistency and verification.
+A working reference for running a personal wiki as a Git repository of markdown files, maintained by Claude Code with structured protocols for consistency and verification.
 
 Based on a production wiki that manages 100+ interconnected pages across infrastructure documentation, project tracking, and personal knowledge management.
+
+Two things live here, and they answer different questions. The **protocols** are the skeleton: procedures you run. The **[casebook](casebook/_index.md)** is the material: the specific ways careful work fails while looking correct — each entry a mechanism rather than an anecdote, stripped of the setting it was found in. The skeleton tells you what to do; the casebook is why the steps are shaped the way they are, and what happens when a step gets dropped because nobody remembered why it existed.
 
 ## What You Get
 
 - **`CLAUDE.md`** — Project instructions that Claude Code loads automatically. Defines conventions, Git workflow, domain context, and protocol index.
+- **Casebook** — Failure mechanisms from a wiki that's been running for hundreds of sessions, each written as a transferable shape with a recognizable trigger. This is the part that doesn't survive a rules-only sync: it's where the *why* lives.
 - **Style guide** — Adapted from Wikipedia's Manual of Style for a personal technical wiki. Covers voice, tense, page types, words to avoid.
 - **15 protocols** — Structured maintenance workflows invoked by saying "run Protocol N":
   0. **Setup** — Guided first-run onboarding: your agent interviews you and customizes the template (start here)
@@ -29,6 +32,12 @@ Based on a production wiki that manages 100+ interconnected pages across infrast
 - **Session logging pattern** — Append-only decision logs that prevent wiki drift across sessions
 - **Session-log mining guide** — Your agent's session history is a queryable memory (decision archaeology, performance self-reviews, incident lookups); `meta/mining-session-logs.md` covers the grep-first capture stack and when RAG earns its keep
 - **Example pages** — Starter homepage, infrastructure overview, and style guide
+
+## Two Ways To Use This
+
+**Adopt it.** Fork or clone, run Protocol 0, let your agent interview you and set it up. This is the intended path, and the Quick Start below walks it.
+
+**Read it.** If you already maintain a wiki with an agent — or you're deciding whether to — the casebook is the part worth an hour on its own. It's the accumulated record of how agent-maintained knowledge stores go wrong: checks that can't fail, probes that report the answer you hoped for, claims that get stronger by being written down. None of it depends on adopting the protocol set.
 
 ## Quick Start
 
@@ -98,6 +107,9 @@ your-wiki/
 ├── CLAUDE.md                  <- Project instructions (edit this first)
 ├── README.md                  <- You are here
 ├── home.md                    <- Wiki homepage (edit this second)
+├── casebook/                  <- Failure mechanisms — why the protocols are shaped this way
+│   ├── _index.md              <- Six chapters + the entry format (start here)
+│   └── *.md                   <- One entry per mechanism; ~25 more planned, listed in the index
 ├── .claude/
 │   ├── hooks/
 │   │   └── wiki-rag.py        <- Optional synthetic-RAG retrieval hook (Protocol 11)
