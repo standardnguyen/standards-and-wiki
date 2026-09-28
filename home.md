@@ -75,6 +75,11 @@ Structured workflows for wiki maintenance, invoked via Claude Code.
 - [Protocol 12: Park](/en/protocols/12-park) — Stash a continuation a cold future session can resume
 - [Protocol 13: Pick Up](/en/protocols/13-pickup) — Resume a parked continuation, re-grounding first
 - [Protocol 14: UI Convergence](/en/protocols/14-ui-convergence) — Recursive fresh-QA-agent loop until a round comes back clean
+- [Protocol 15: LLM Injection Scan](/en/protocols/15-llm-injection-scan) — Sweep the wiki and its own rules for injected instructions
+- [Protocol 16: Fact-Check](/en/protocols/16-fact-check) — Verify a page's claims against external sources, classify, fix with permission
+- [Protocol 17: Conversation Forensics](/en/protocols/17-conversation-forensics) — Find the turn where a session went wrong, and name why
+- [Protocol 18: Tighten](/en/protocols/18-tighten) — Place a unit of knowledge where the retrieval need will actually load it
+- [Protocol 19: Cold Read](/en/protocols/19-cold-read) — Put an unprimed reader in front of the wiki and fix what trips it
 
 ---
 
