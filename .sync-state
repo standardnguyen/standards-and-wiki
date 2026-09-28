@@ -1,3 +1,3 @@
-last-synced: f6bfca97
+last-synced: 473d21453
 synced: 2026-09-28
-note: Added the casebook (index + three exemplar entries) and wired it into home.md, README.md and CLAUDE.md. Carried from a pre-reset local branch, so only the casebook/ tree was applied; nothing else moved. Mirror-set files unchanged since the 2026-08-21 anchor.
+note: Five protocols appended at 15-19 (injection scan, fact-check, conversation forensics, tighten, cold read), and a live-handoff section added to Protocol 12. README leads with the reference-implementation claim; the casebook reached completeness in the prior sync.
