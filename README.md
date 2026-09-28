@@ -1,6 +1,6 @@
 # Personal Wiki Template
 
-A working reference for running a personal wiki as a Git repository of markdown files, maintained by Claude Code with structured protocols for consistency and verification.
+A reference implementation of an agent-maintained wiki — a Git repository of markdown files, kept coherent by Claude Code and a set of structured protocols.
 
 Based on a production wiki that manages 100+ interconnected pages across infrastructure documentation, project tracking, and personal knowledge management.
 
