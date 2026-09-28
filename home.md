@@ -45,8 +45,14 @@ What goes wrong — and the reasons the protocols are shaped the way they are. O
 - [Laundered confidence](/en/casebook/laundered-confidence) — Writing a claim down strengthens it without adding evidence
 - [The check that cannot stop the action](/en/casebook/the-check-that-cannot-stop-the-action) — A guard folded into the same call it guards
 - [The probe that reads the same in both branches](/en/casebook/the-probe-that-reads-the-same-in-both-branches) — A constant with a plausible shape
+- [A test that has never failed is a hypothesis](/en/casebook/a-test-that-has-never-failed-is-a-hypothesis) — A green test that has never been red proves nothing
+- [The relief valve wired to the kill switch](/en/casebook/the-relief-valve-wired-to-the-kill-switch) — Two limits on one axis, so the softer one can never fire
+- [A pointer you don't open is not context](/en/casebook/a-pointer-you-dont-open-is-not-context) — Retrieval that returns a path has returned nothing yet
+- [N agreeing sources are not N sources](/en/casebook/n-agreeing-sources-are-not-n-sources) — Agreement among copies measures propagation, not truth
+- [A rule with no recorded why](/en/casebook/a-rule-with-no-recorded-why) — The reason is the part that keeps a rule from being re-derived wrongly
+- [Verifying your own write is a disclosure vector](/en/casebook/verifying-your-own-write-is-a-disclosure-vector) — Reading back your line prints its neighbours
 
-<!-- Customize: add a chapter or entry link here as you write them; the casebook index lists the planned ones. -->
+<!-- Customize: the full set lives in the casebook index — link a few here, or swap these for the ones that hit you hardest; the situation should do the reminding. -->
 
 ### Protocols
 
