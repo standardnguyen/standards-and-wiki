@@ -37,6 +37,17 @@ How this wiki is managed and maintained.
 - [Mining Session Logs](/en/meta/mining-session-logs) — Using agent session history as queryable memory
 - [Parked Continuations](/en/continuations) — Resumable task briefings (park with Protocol 12, pick up with Protocol 13)
 
+### The Casebook
+
+What goes wrong — and the reasons the protocols are shaped the way they are. One entry per failure mechanism, each stripped of the setting it was found in.
+
+- [The Casebook](/en/casebook) — Index: six chapters, the entry format, and why a casebook rather than more rules
+- [Laundered confidence](/en/casebook/laundered-confidence) — Writing a claim down strengthens it without adding evidence
+- [The check that cannot stop the action](/en/casebook/the-check-that-cannot-stop-the-action) — A guard folded into the same call it guards
+- [The probe that reads the same in both branches](/en/casebook/the-probe-that-reads-the-same-in-both-branches) — A constant with a plausible shape
+
+<!-- Customize: add a chapter or entry link here as you write them; the casebook index lists the planned ones. -->
+
 ### Protocols
 
 Structured workflows for wiki maintenance, invoked via Claude Code.
