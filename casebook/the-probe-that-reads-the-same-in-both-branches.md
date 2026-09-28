@@ -24,7 +24,7 @@ And the reason nobody checks is structural: you reach for a probe precisely when
 
 The question to ask before trusting any measurement is not "is this correct?" — you cannot answer that about a probe you just invented. The question is:
 
-> **What would this read in the case I am trying to rule out?**
+> **What would this read in the case we are trying to rule out?**
 
 If the answer is "the same thing," you have learned nothing, and worse, you now believe something.
 

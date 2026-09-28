@@ -4,7 +4,7 @@
 
 A session reasons its way to a plausible conclusion. It is not certain — the reasoning was a mechanism, an inference, a synthesis of two things that seemed to fit. It says so out loud, hedged, in conversation:
 
-> "if I'm reading that right, it's probably X"
+> "if we're reading that right, it's probably X"
 
 Then it writes the page. Pages are declarative; that is what a wiki is for. The sentence that lands on disk is:
 
@@ -18,7 +18,7 @@ Nobody lied. Nobody was careless. The uncertainty was stated. It simply did not 
 
 Because at no single step does anything look wrong.
 
-The hedge was real — it happened, it is in the transcript. The page is written in the house style, which is declarative, because a wiki full of "possibly" and "I think" is a wiki nobody can act on. And the later session is doing *exactly what it should*: preferring a written source over its own recollection. That is the correct instinct. It is the whole reason the wiki exists.
+The hedge was real — it happened, it is in the transcript. The page is written in the house style, which is declarative, because a wiki full of "possibly" and "we think" is a wiki nobody can act on. And the later session is doing *exactly what it should*: preferring a written source over its own recollection. That is the correct instinct. It is the whole reason the wiki exists.
 
 The failure is invisible from inside because **the page looks like evidence.** There is no visible difference between a sentence someone verified and a sentence someone inferred. Once written, they are the same bytes.
 
@@ -32,9 +32,9 @@ Three tiers, weakest to strongest:
 
 | tag | means | strength |
 |---|---|---|
-| `[recalled: …]` | I believe this | weakest — and reads as authoritative anyway |
+| `[recalled: …]` | we believe this | weakest — and reads as authoritative anyway |
 | `[read: file:line]` | it is written here | strong |
-| `[ran: <command> → <output>]` | I observed it | strongest |
+| `[ran: <command> → <output>]` | we observed it | strongest |
 
 The laundering is the move from tier 1 to tier 2 performed by the act of writing. No new observation occurred. The claim got stronger anyway.
 
