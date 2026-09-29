@@ -28,50 +28,50 @@ If you take one thing from this directory, take that third property. **Be most s
 The guard is present, reviewed, and decorative.
 
 - [The check that cannot stop the action](the-check-that-cannot-stop-the-action.md)
-- The correct check and the wrong outcome *(planned)*
-- A test that has never failed is a hypothesis *(planned)*
-- The relief valve wired to the kill switch *(planned)*
+- [The correct check and the wrong outcome](the-correct-check-and-the-wrong-outcome.md)
+- [A test that has never failed is a hypothesis](a-test-that-has-never-failed-is-a-hypothesis.md)
+- [The relief valve wired to the kill switch](the-relief-valve-wired-to-the-kill-switch.md)
 
 ### II. Probes that lie
 The measurement reports the answer you were hoping for.
 
 - [The probe that reads the same in both branches](the-probe-that-reads-the-same-in-both-branches.md)
-- The probe that finds its subject by a property the control shares *(planned)*
-- The change-detector keyed on an aggregate *(planned)*
-- When you build the instrument, its bugs arrive as good news *(planned)*
+- [The probe that finds its subject by a property the control shares](the-probe-that-finds-its-subject-by-a-property-the-control-shares.md)
+- [The change-detector keyed on an aggregate](the-change-detector-keyed-on-an-aggregate.md)
+- [When you build the instrument, its bugs arrive as good news](when-you-build-the-instrument-its-bugs-arrive-as-good-news.md)
 
 ### III. Absence that isn't
 Nothing found is not the same as nothing there.
 
-- Zero occurrences is not absence *(planned)*
-- Empty is not missing *(planned)*
-- A measured absence can be a decision *(planned)*
+- [Zero occurrences is not absence](zero-occurrences-is-not-absence.md)
+- [Empty is not missing](empty-is-not-missing.md)
+- [A measured absence can be a decision](a-measured-absence-can-be-a-decision.md)
 
 ### IV. Laundered confidence
 How a guess becomes a fact without anyone lying.
 
 - [Laundered confidence](laundered-confidence.md)
-- The summary compresses out the qualifier *(planned)*
-- N agreeing sources are not N sources *(planned)*
-- Confidence is the broken instrument *(planned)*
-- Surface symmetry is not structural equivalence *(planned)*
-- A normalization can carry the artifact it removes *(planned)*
+- [The summary compresses out the qualifier](the-summary-compresses-out-the-qualifier.md)
+- [N agreeing sources are not N sources](n-agreeing-sources-are-not-n-sources.md)
+- [Confidence is the broken instrument](confidence-is-the-broken-instrument.md)
+- [Surface symmetry is not structural equivalence](surface-symmetry-is-not-structural-equivalence.md)
+- [A normalization can carry the artifact it removes](a-normalization-can-carry-the-artifact-it-removes.md)
 
 ### V. Rules that rot
 The failure modes of the instruction layer itself.
 
-- A rule with no recorded why *(planned)*
-- A rule can be the hazard *(planned)*
-- A pointer you don't open is not context *(planned)*
-- Injection is not consumption *(planned)*
-- A negative capability claim is a claim about scope *(planned)*
+- [A rule with no recorded why](a-rule-with-no-recorded-why.md)
+- [A rule can be the hazard](a-rule-can-be-the-hazard.md)
+- [A pointer you don't open is not context](a-pointer-you-dont-open-is-not-context.md)
+- [Injection is not consumption](injection-is-not-consumption.md)
+- [A negative capability claim is a claim about scope](a-negative-capability-claim-is-a-claim-about-scope.md)
 
 ### VI. Isolation that isn't
 Two things you believed were independent, and weren't.
 
-- The second opinion that shares your blind spot *(planned)*
-- Verifying your own write is a disclosure vector *(planned)*
-- A redaction pattern encodes an assumption about shape *(planned)*
+- [The second opinion that shares your blind spot](the-second-opinion-that-shares-your-blind-spot.md)
+- [Verifying your own write is a disclosure vector](verifying-your-own-write-is-a-disclosure-vector.md)
+- [A redaction pattern encodes an assumption about shape](a-redaction-pattern-encodes-an-assumption-about-shape.md)
 
 ## Entry format
 

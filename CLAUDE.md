@@ -40,7 +40,7 @@ This is a personal wiki maintained as markdown files, serving as documentation f
   - `mining-session-logs.md` — How to mine old session logs for rules worth codifying
 - `continuations/` — Parked task briefings a cold future session can resume from (Protocols 12/13)
 - `casebook/` — Failure mechanisms: the reasons behind the protocols (start at `casebook/_index.md`)
-- `protocols/` — Structured maintenance workflows (0-14; 0 is the guided first-run setup)
+- `protocols/` — Structured maintenance workflows (0-19; 0 is the guided first-run setup)
 - `.claude/hooks/wiki-rag.py` — optional synthetic-RAG retrieval hook (see Protocol 11); `.claude/settings.json.example` shows how to wire it
 
 <!-- Customize: update this to match your actual directory structure as it grows. -->
@@ -118,6 +118,11 @@ Protocols are stored in `protocols/` as individual files. When a protocol is inv
 | 12 | Park — stash a self-contained continuation so a cold future session can resume the work | `protocols/12-park.md` |
 | 13 | Pick up — resume a parked continuation, re-grounding against live state first | `protocols/13-pickup.md` |
 | 14 | UI convergence — recursive fresh-QA-agent loop over a user-facing surface until a round comes back clean | `protocols/14-ui-convergence.md` |
+| 15 | LLM injection scan — sweep the wiki and its rules files for prompt-injection patterns; audit only, never auto-clean | `protocols/15-llm-injection-scan.md` |
+| 16 | Fact-check — verify a page's claims against external sources, classify each, and fix only with permission | `protocols/16-fact-check.md` |
+| 17 | Conversation forensics — find the turn where a session went wrong and name the root cause | `protocols/17-conversation-forensics.md` |
+| 18 | Tighten — place a unit of knowledge where the retrieval need will actually load it | `protocols/18-tighten.md` |
+| 19 | Cold read — put an unprimed fresh process in front of the wiki and fix what trips it | `protocols/19-cold-read.md` |
 
 <!-- Customize: add your own protocols as you develop repeatable workflows. -->
 

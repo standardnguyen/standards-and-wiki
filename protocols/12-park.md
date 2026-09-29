@@ -55,3 +55,24 @@ A parked continuation is a wiki edit — commit it, normally as part of a [Proto
 
 - [Protocol 13: Pick Up](13-pickup.md) — resumes a parked continuation
 - [Protocol 7: Commit, Ship & Prepare for Continuation](7-commit-and-ship.md) — close-out, where parking usually happens
+- [casebook/](../casebook/_index.md) — why the *reason* survives a trim, and why a rule with no recorded why gets re-derived wrongly
+
+## When there is a live second session
+
+Parking covers the case where the work stops and resumes later. **A doc alone is not a handoff** — this is the failure mode 12 does not reach on its own, and it is worth a section because it is easy to mistake a good briefing for a completed transfer.
+
+When the outgoing session can start a second agent *now* — a peer session, another tool, a fresh process in a terminal — the doc **seeds a conversation**; it is not the handoff. The incoming agent reads it, and then it has questions: *"wait, what about X?"*, *"is Y already done?"*, *"what does Z depend on?"*. Those are exactly the questions the doc's `Next` queue and `Gotchas` section cannot anticipate. Answer them while the outgoing session still holds the context — once it exits, the answers are gone and the incoming agent is back to reading a file, which is where it started.
+
+**How it runs:**
+
+1. Write the continuation doc **exactly as above**. It is still the artifact of record — the conversation is an addition, not a replacement.
+2. Start the second session. Give it the doc's path and one line of orientation. Do not pre-explain the task in the brief; the point is to find out what the doc fails to convey.
+3. **Answer its questions until it can restate the task back to you and say what it will do first.** That restatement is the pass condition, and it is the whole difference between a handoff and a file write.
+4. Redirect *prioritization* questions to the human rather than answering them yourself — "should this come before that?" is a scope decision, and an outgoing agent editing the queue on its way out is how a parked doc silently changes shape.
+5. Then exit. The incoming session owns the work.
+
+**Calibration:** a handoff should take a handful of exchanges. If it is running long, the doc is the problem — the missing context is the thing to *write down*, not to explain again. Fix the doc with what the questions revealed, and the next pickup is cheap.
+
+**One rule for the brief itself:** if a secret is needed, name the path or the command that *renders* it, never its value. A briefing is a file that gets read, copied, and quoted; treat it exactly like a page you are about to commit.
+
+**Do not build a spawn tree.** An outgoing session that starts a second one that starts a third is a practice worth *having* and a mess to debug. One hop, then the new session owns it.

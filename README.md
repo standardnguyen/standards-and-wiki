@@ -11,7 +11,7 @@ Two things live here, and they answer different questions. The **protocols** are
 - **`CLAUDE.md`** — Project instructions that Claude Code loads automatically. Defines conventions, Git workflow, domain context, and protocol index.
 - **Casebook** — Failure mechanisms from a wiki that's been running for hundreds of sessions, each written as a transferable shape with a recognizable trigger. This is the part that doesn't survive a rules-only sync: it's where the *why* lives.
 - **Style guide** — Adapted from Wikipedia's Manual of Style for a personal technical wiki. Covers voice, tense, page types, words to avoid.
-- **15 protocols** — Structured maintenance workflows invoked by saying "run Protocol N":
+- **20 protocols** — Structured maintenance workflows invoked by saying "run Protocol N":
   0. **Setup** — Guided first-run onboarding: your agent interviews you and customizes the template (start here)
   1. **Harmonize** — Full editorial pass to fix contradictions, anachronisms, tone
   2. **Spot-Check** — Random-sample contradiction detection across page pairs
@@ -135,6 +135,11 @@ your-wiki/
 │   ├── 12-park.md
 │   ├── 13-pickup.md
 │   ├── 14-ui-convergence.md
+│   ├── 15-llm-injection-scan.md
+│   ├── 16-fact-check.md
+│   ├── 17-conversation-forensics.md
+│   ├── 18-tighten.md
+│   ├── 19-cold-read.md
 │   └── scripts/
 │       └── homepage-crawl.py
 ├── continuations/             <- Parked task briefings (Protocols 12/13)
