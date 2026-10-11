@@ -17,7 +17,7 @@ Zero. The site builds. Four commits later you find it has not built since the fi
 The same shape, in other clothes:
 
 - **Exit 0 by design.** A scheduled publish script exits 0 on every path, so a failed push never wedges the schedule. That choice is defensible. It also means the failed push is recorded only as a line in the script's own log, and the public site serves days-old data while every run reports success.
-- **One flag, two causes.** A merge request reports `mergeable: false`. You resolve the conflicts. It still reports `false`, because the request is marked as a draft, and a draft reports `false` however clean the merge is. A session that trusts the flag keeps re-resolving conflicts that no longer exist and reports a block that is not there.
+- **One flag, two causes.** On some hosts, a merge request reports `mergeable: false`. You resolve the conflicts. It still reports `false`, because the request is marked as a draft, and on those hosts a draft reports `false` however clean the merge is. A session that trusts the flag keeps re-resolving conflicts that no longer exist and reports a block that is not there.
 - **Green build, wrong output.** The site generator exits 0. A table lost more than a hundred rows because a line break moved; a link points one directory too deep; a page beside a same-named directory was dropped from the site without a warning. The build's job was to finish, and it finished.
 - **Merged is not deployed.** The fix is merged. You probe the fixed endpoint and it returns 200. But a handler that swallows authorization errors returns 200 with the guard present or absent, and the fix sits undeployed for days while the record says it shipped.
 
@@ -45,9 +45,9 @@ A real failure hidden for as long as nobody looks at the artifact. The cost grow
 
 ## The defense
 
-1. **Read the status of the command you mean.** In a pipe, use `set -o pipefail` or read `${PIPESTATUS[0]}`, or do not pipe the check at all. Run checkers unpiped and read their own exit.
+1. **Read the status of the command you mean.** In a pipe, use `set -o pipefail` or, in bash, read `${PIPESTATUS[0]}` immediately after the pipe, or do not pipe the check at all. Run checkers unpiped and read their own exit.
 2. **Check the artifact, not the status, for anything that runs unattended.** A job that must never wedge its schedule can keep exiting 0, but then something else has to watch the output: a freshness check on the published data, an alert when it goes stale.
-3. **When a flag has more than one cause, read the field that names the cause.** A merge request's draft state and its conflicted-files list tell the two causes apart; the summary flag does not.
+3. **When a flag has more than one cause, read the field that names the cause.** Where your host exposes them, a merge request's draft state and its conflicted-files list tell the two causes apart; the summary flag does not.
 4. **After a build, check one expected output exists and is right.** One rendered row count, one link, one page that should be there. A checker for the silent-failure classes your generator has is worth building once each class recurs.
 5. **Verify a deploy on the box, not on the endpoint.** Read the deployed revision, the file's modification time, or a count of the new string in the deployed file. An endpoint probe tells you the service answers, not which code answered.
 

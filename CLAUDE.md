@@ -188,7 +188,7 @@ Never display private keys, API tokens, passwords, or other credentials in the c
 
 ## Subagent Workflow
 
-Subagents are useful for broad read-only context-gathering and for delegating the propagation sweep in Protocol 7. Three standing constraints:
+Subagents are useful for broad read-only context-gathering and for delegating the propagation sweep ([Protocol 23](protocols/23-propagation-sweep.md)). Three standing constraints:
 
 - **There is no real sandbox.** Subagents inherit the parent's tools — a subagent with shell access escapes any tool whitelist you thought you had. Scope them by prompt, and re-state prohibitions in every agent's briefing; a fence stated to one agent does not bind the next.
 - **Background agents can't ask for interactive permission.** They fail silently on writes to paths that weren't pre-approved. Give them a pre-approved scratch directory to stage into, and move files to their destination yourself afterward.
@@ -238,7 +238,7 @@ Coding-behavior rules. Rules 1–4 are adapted from Andrej Karpathy's observatio
 - Match the existing style even if you'd write it differently.
 - Every changed line should trace directly to what was asked.
 - When your edits orphan an import/variable/function, clean those up — but don't sweep pre-existing dead code unless asked.
-- **Propagation rule:** When you change a fact (a count, an address, a status, a name, a date, a price), `grep -rn "<old value>" . --include='*.md'` before committing — **and make sure that sweep reaches `CLAUDE.md` and `.claude/` too, not just your content directories.** On a large wiki the same fact often appears in many places; changing one page and leaving the others is the single largest source of wiki drift. If the grep turns up pages you're unsure about, list them for the user rather than skipping silently.
+- **Propagation rule:** When you change a fact (a count, an address, a status, a name, a date, a price), `grep -rn --exclude-dir=logs "<old value>" .` before committing — **and make sure that sweep reaches `CLAUDE.md` and `.claude/` too, not just your content directories.** On a large wiki the same fact often appears in many places; changing one page and leaving the others is the single largest source of wiki drift. If the grep turns up pages you're unsure about, list them for the user rather than skipping silently.
 
   **The widened paths are load-bearing.** A propagation rule scoped to "the wiki" quietly excludes the instruction file it is written in — which is usually the *most-read* surface in the repo. That exclusion is invisible: nobody greps a location they were never told about, so the file drifts while every page around it stays true. **A propagation rule that cannot see the file it is written in is a shape worth looking for elsewhere, too.**
 - **Homeless information rule:** When a session produces a new fact or reference that should be in the wiki but has no obvious page to live on, **do not silently drop it.** Search for candidate pages (`grep -ri` for related terms), and either add it to the best-fit existing page or create a new one. If genuinely unsure where it belongs, surface it to the user: *"I learned X but there's no wiki page for it — should I add it to Y, create a new page, or note it in the session log?"* The failure mode: the agent discovers a fact, notes it internally, and moves on without persisting it anywhere — the next session has no way to know.

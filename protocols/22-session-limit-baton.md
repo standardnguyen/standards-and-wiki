@@ -94,7 +94,7 @@ Name what made this session expensive that the setup should have absorbed. Commo
 
 Then act:
 
-1. **If you can edit the setup yourself**, do it — surgically, one edit per real finding, and as its own reviewable commit rather than a silent change. [Protocol 18 (Tighten)](18-tighten.md) covers where each kind of fact belongs.
+1. **If you can edit the setup yourself**, do it — surgically, one edit per real finding, and as its own reviewable commit (by exact path, per Protocol 7 §3) rather than a silent change. At a forced stop, say in the baton whether it is pushed, and that the Protocol 7 §2d/Protocol 23 sweep of that edit is deferred to the next session. [Protocol 18 (Tighten)](18-tighten.md) covers where each kind of fact belongs.
 2. **If you cannot**, output the exact text for the user to paste and the files to add or remove. "Add this line under the existing `## Writing Conventions` section" beats "consider updating your instructions."
 
 After the setup edits, re-check the baton. Anything the next session will now load from the setup does not need to be in the baton too.

@@ -8,13 +8,13 @@ A correction that lands on one page contradicts every carrier that still states 
 
 "Run Protocol 23", "sweep these commits", or Protocol 7 §2d on any commit that changes a fact (a number, date, count, status, name, path, address or price) or changes how a mechanism works. It also runs standalone on named commit SHAs. On someone else's pushed work, the sweep hands facts back to the owner (`file:line`, the claim, the evidence) and edits nothing.
 
-Skip the whole protocol only for a leaf page with no cross-references (a recipe, a journal entry, a standalone log), and say so in the ship report. Steps 4 and 5 (the agent waves and judging) are skipped when the diff holds no factual corrections at all, as Protocol 7 §2d says; steps 2 and 3 still run. A silent skip reads the same as a sweep that was never run.
+Skip the whole protocol only for a leaf page with no cross-references (a recipe, a journal entry, a standalone log), and say so in the ship report. When the diff holds no factual corrections and changes no mechanism, skip the protocol: Protocol 7 §2d's grep is enough. A silent skip reads the same as a sweep that was never run.
 
 ## Procedure
 
 ### 1. Resolve the scope
 
-Commit your change first, then record the SHA of each commit you made as you make it (`git rev-parse HEAD` in the same invocation as the commit, or the hash the commit prints), confirm each with `git show --stat <sha>`, and hand exactly those SHAs to wave 1. On a shared checkout `HEAD` may already be a peer's commit, so a `rev-parse` run later names the wrong one. Never hand an agent `git diff --cached` or a `..HEAD` range: HEAD moves while a wave runs, so one range string names a different set at launch and at report. On a shared checkout, build your file list with `git show --name-only <sha>` on each of your own commits, not from a span between two of them, which fills with other sessions' work.
+Commit your change first (when you are sweeping someone else's pushed commits, skip this and start from their SHAs), then record the SHA of each commit you made as you make it (the hash the commit prints; a later `git rev-parse HEAD` can race a peer's commit), confirm each with `git show --stat <sha>`, and hand exactly those SHAs to wave 1. On a shared checkout `HEAD` may already be a peer's commit, so a `rev-parse` run later names the wrong one. Never hand an agent `git diff --cached` or a `..HEAD` range: HEAD moves while a wave runs, so one range string names a different set at launch and at report. On a shared checkout, build your file list with `git show --name-only <sha>` on each of your own commits, not from a span between two of them, which fills with other sessions' work.
 
 ### 2. Run the deterministic checks first
 
@@ -58,7 +58,7 @@ Dedupe candidates by `file:line` plus fact first. Then run one judge per lens ov
 - **Lens A, staleness:** is the claimed defect real at HEAD? Verify the new fact independently.
 - **Lens B, past-scoping:** is the line deliberately historical? Look for a date pin, a commit hash, strikethrough, an incident or resolution block, a page-level "retired" banner, or the convention that index rows track current truth while log bodies track the record.
 
-Confirm a candidate only when both lenses agree it is stale. **A disagreement is logged in the session log for the next session, not edited**, because a wrong edit costs more than a late one. A lens-B reason that declines jurisdiction ("an accuracy issue, not a scoping issue") is not a verdict: check that candidate against the source yourself. Adjudicate every unique candidate; batching is what makes that affordable.
+Confirm a candidate only when both lenses agree it is stale. **A disagreement is logged for the next session (in the session log, or in the continuation prompt if you have no session logging), not edited**, because a wrong edit costs more than a late one. A lens-B reason that declines jurisdiction ("an accuracy issue, not a scoping issue") is not a verdict: check that candidate against the source yourself. Adjudicate every unique candidate; batching is what makes that affordable.
 
 If a script collects the verdicts, filter on the presence of a verdict, not on the row, and reconcile confirmed plus rejected against unique candidates minus failed agents. A crashed judge and a rejection otherwise look identical. If any run flagged a passage another run cleared, it goes to judging: a flag beats a clear.
 
@@ -67,7 +67,7 @@ Report both `N confirmed` and `M distinct file:line`; neither alone counts defec
 ### 6. Fix: human-reaching first, then canonicalize
 
 1. **Human-reaching fixes first.** A line meant to be spoken, a message draft, a prompt a future session executes, a number someone will quote: fix those one at a time and re-verify each against the source. Never let the finders grade severity.
-2. **Canonicalize instead of updating everything.** When a fact has more than two live carriers, pick one canonical home and turn the others into pointers. Updating N carriers is work on every sweep and never reduces N. Before writing a pointer, grep the target page for the figure. Keep a figure on several pages only when it must be readable without a click.
+2. **Canonicalize instead of updating everything.** When a fact has more than two live carriers, pick one canonical home and turn the others into pointers. Updating N carriers is work on every sweep and never reduces N. Before writing a pointer, grep the target page for the figure. Keep a figure on several pages only when it must be readable without a click. The fix agent reports a widely carried value and edits none of its carriers (rule 1 below); the shipping session canonicalizes, and those edits skip the two-lens gate because they move a fact rather than correct one.
 3. **Delete counts of mutable sets; don't update them.** An updated count is true until tomorrow. Delete it and keep the command, link or enumeration that reproduces it. Keep a count only when a date bounds the set ("N records as of <date>"), or when the sentence cannot survive without it, and then say what was counted and when. Never replace a count with "about N".
 4. **Report the class.** Group findings by mechanism. For any group of three or more, ask: what single rule, in one place, would have prevented all of them? Propose one rule per class: a writing rule goes in the style guide, a mechanically decidable one becomes a [Protocol 10](10-codify-drift-check.md) check, one that must fire while working goes in `CLAUDE.md`, and coincidence is reported as "no class here". Strengthen an existing rule before adding one.
 
@@ -79,13 +79,13 @@ Paste these three rules into every fix brief:
 
 ### 7. Commit fixes and re-scope
 
-Each wave's fixes land as their own commits, staged by exact path per [Protocol 7](7-commit-and-ship.md) §3, and steps 2 and 3 rerun on them before the next wave. A wave that produced no fix commits ends the sweep. Fix commits are the highest-risk input: the defects concentrate in a fix's own annotations (dates, counts, attributions, anchors), the near-miss siblings of the edited line, and claims a fix makes about the sweep in flight.
+Each wave's fixes land as their own commits, staged by exact path per [Protocol 7](7-commit-and-ship.md) §3, and steps 2 and 3 rerun on them before the next wave; record each fix commit's SHA the way step 1 does, because waves 2 and 3 are handed those SHAs. If consecutive waves keep finding one class of defect in your own fixes, delete the class instead of fixing its instances: shorter notes, no cycle totals, and re-read the edited sentence and its neighbours. A wave that produced no fix commits ends the sweep. Fix commits are the highest-risk input: the defects concentrate in a fix's own annotations (dates, counts, attributions, anchors), the near-miss siblings of the edited line, and claims a fix makes about the sweep in flight.
 
 - Never claim a fix closed a class ("fixed everywhere") beyond what you searched. Say what you searched, or search what you say.
 - Keep correction notes short, and never record a running cycle's totals on a page; the next wave falsifies them. A note that a reader needs, such as the date a fact was last verified, stays; narration of the sweep itself does not.
 - After any tree-wide pattern rewrite, read `git diff` of your root rules file; if that file is a symlink target (or other paths link to it), a rewrite of the linked path edits it without showing you.
 
-After the last wave: push (when Protocol 7 called this, its §4 does the push), update the PR, and log what each wave found, plus the lens disagreements, in the session log.
+After the last wave: push (when Protocol 7 called this, whichever of its steps pushes does so), update the PR, and log what each wave found, plus the lens disagreements, in the session log (or the continuation prompt, if you have no session logging).
 
 ## Notes
 
