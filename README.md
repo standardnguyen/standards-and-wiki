@@ -124,7 +124,7 @@ A protocol is a plain markdown file that nothing loads until you name it ("run P
 - **Invocation is exactly when you say.** No description match decides it.
 - **The count doesn't matter.** You can write as many as you like without watching your context. A protocol that falls out of use costs nothing and doesn't need maintaining; it just sits there. (`AGENTS.md` tells the agent to read a protocol's file before running it, so what runs is the current text, not a remembered copy.)
 - **It works in any harness.** There is no skills directory to port.
-- **You know how closely to follow it.** A protocol is followed as written. If you later add reusable shapes that an agent should adapt rather than execute, keep them in a separate place under a different name (we call them patterns), so the agent never has to guess how strictly to treat what it just read.
+- **You know how closely to follow it.** A protocol is followed as written. If you later add reusable shapes that an agent should adapt rather than execute, keep them in a separate place under a different name (we call them [patterns](patterns/_index.md), and ship one), so the agent never has to guess how strictly to treat what it just read.
 
 What you give up: nothing volunteers a protocol you didn't think to ask for. `AGENTS.md` carries a single pointer to `protocols/_index.md`, which lists them all and is read only when the agent needs it, so the discovery gap is an index lookup away and the always-loaded cost stays at one line however many protocols you write. If you like skills anyway, nothing stops you from adding one whose body says "run Protocol N"; keep the procedure in the protocol so the skill can't go stale.
 
@@ -176,6 +176,9 @@ your-wiki/
 ├── casebook/                  <- Failure mechanisms — why the protocols are shaped this way
 │   ├── _index.md              <- Six chapters + the entry format (start here)
 │   └── *.md                   <- One entry per mechanism, grouped by chapter in the index
+├── patterns/                  <- Reusable shapes an agent adapts (not steps it follows)
+│   ├── _index.md              <- Protocol vs pattern, structure, the index
+│   └── 00001-mario-and-luigi/ <- Two sessions run one long job as a pair
 ├── .claude/
 │   ├── hooks/
 │   │   └── wiki-rag.py        <- Optional synthetic-RAG retrieval hook (Protocol 11)

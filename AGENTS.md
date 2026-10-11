@@ -41,6 +41,7 @@ This is a personal wiki maintained as markdown files, serving as documentation f
 - `continuations/` — Parked task briefings a cold future session can resume from (Protocols 12/13)
 - `casebook/` — Failure mechanisms: the reasons behind the protocols (start at `casebook/_index.md`)
 - `protocols/` — Structured maintenance workflows (numbered; 0 is the guided first-run setup; listed in `protocols/_index.md`)
+- `patterns/` — Reusable shapes an agent adapts rather than follows as written (see `patterns/_index.md`)
 - `.claude/hooks/wiki-rag.py` — optional synthetic-RAG retrieval hook (see Protocol 11); `.claude/settings.json.example` shows how to wire it
 
 <!-- Customize: update this to match your actual directory structure as it grows. -->
@@ -106,6 +107,10 @@ The full list, with one-line descriptions, is in [`protocols/_index.md`](protoco
 <!-- Customize: add your own protocols as you develop repeatable workflows, and add a row for each in protocols/_index.md. -->
 
 **Root protocols vs. sub-protocols.** The numbered protocols in `protocols/_index.md` are root-level — they apply across the whole wiki. Individual sub-projects may define their own **sub-protocols** in their project-local `AGENTS.md` (or in a `subprotocols/` directory), numbered independently within the project namespace. A sub-project's "Sub-Protocol 0" is unrelated to root Protocol 0. If a project defines sub-protocols, label them "Sub-Protocol N" rather than "Protocol N" to avoid collision with the root numbering. See Protocol 8 for how to design and register them.
+
+## Patterns
+
+Patterns are stored in `patterns/` as directories, each with an `_index.md` (the invariant shape) and an `examples/` archive. A protocol is followed as written; a pattern is adapted. When a pattern is invoked (e.g., "use pattern 00001"), read its `_index.md` before acting, and when you implement one and ship, store your variant under its `examples/`. The index and the rules are in [`patterns/_index.md`](patterns/_index.md).
 
 ## Session Logging
 

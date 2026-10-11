@@ -41,6 +41,7 @@ How this wiki is managed and maintained.
 
 What goes wrong — and the reasons the protocols are shaped the way they are. One entry per failure mechanism, each stripped of the setting it was found in.
 
+- [Patterns](/en/patterns) — Reusable shapes an agent adapts rather than follows as written, starting with Mario and Luigi
 - [The Casebook](/en/casebook) — Index: six chapters, the entry format, and why a casebook rather than more rules
 - [Laundered confidence](/en/casebook/laundered-confidence) — Writing a claim down strengthens it without adding evidence
 - [The check that cannot stop the action](/en/casebook/the-check-that-cannot-stop-the-action) — A guard folded into the same call it guards
