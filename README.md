@@ -113,6 +113,20 @@ If a step doesn't apply, the agent says which step it's skipping and why, and of
 
 **If you only want the consistency work without the full close-out** (no session log or continuation prompt), run the pieces on their own: `"protocol 4"` harmonizes recent changes, `"protocol 2"` spot-checks random page pairs for contradictions, and `"protocol 23"` sweeps named commits. Each of these still commits its own fixes, so ask for a report only if you want no commit.
 
+## Why Don't We Have Skills?
+
+Because we needed a name that didn't collide with what existing harnesses already mean by "skill", and because we wanted control over invocation that a skill doesn't give.
+
+In Claude Code and on claude.ai, a skill's name and description are loaded into context by design, so the model can decide when to use it; only the body waits for a trigger. That has two costs. The always-loaded part grows with every skill you add, and when a skill fires depends on the model matching a description, which you can't fully control.
+
+A protocol is a plain markdown file that nothing loads until you name it ("run Protocol 7") or a step points at it. So:
+
+- **Invocation is exactly when you say.** No description match decides it.
+- **The count doesn't matter.** You can write as many as you like without watching your context. A protocol that falls out of use costs nothing and doesn't need maintaining; it just sits there. (`CLAUDE.md` tells the agent to read a protocol's file before running it, so what runs is the current text, not a remembered copy.)
+- **It works in any harness.** There is no skills directory to port.
+
+What you give up: nothing volunteers a protocol you didn't think to ask for. The protocol table in `CLAUDE.md` is the mitigation. A one-line row each is the only always-loaded cost, and a protocol you rarely run doesn't need a row. If you like skills anyway, nothing stops you from adding one whose body says "run Protocol N"; keep the procedure in the protocol so the skill can't go stale.
+
 # Why Pay Tokens Up Front: The Propagation Problem
 
 A fact in a wiki, or in an agent's memory, is rarely written once. A count sits in a summary table, an index row, a hub description and a status line. When the fact changes and one copy is fixed, every other copy is now a contradiction, and nothing tells the next session which pages they are. That is the propagation problem, and it is one of the ways an agent-maintained knowledge store goes quietly wrong.
