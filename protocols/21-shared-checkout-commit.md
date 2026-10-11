@@ -29,13 +29,13 @@ Pick the form by where the bytes you mean to ship live: the worktree or the inde
    base=$(git rev-parse HEAD)                       # recorded when you built what you will commit
    list=$(mktemp); printf '%s\n' path/one path/two > "$list"
    [ -s "$list" ] || exit 1                         # no list: abort, never fail open
-   foreign=$(git diff --cached --name-only -z --no-renames | grep -zvxF -f "$list" | tr '\0' '\n'; exit "${PIPESTATUS[1]}"); rc=$?
+   rc=0; foreign=$(git diff --cached --name-only -z --no-renames | grep -zvxF -f "$list" | tr '\0' '\n'; exit "${PIPESTATUS[1]}") || rc=$?
    [ "$rc" -eq 1 ] || { echo "abort: ${foreign:-grep error}" >&2; exit 1; }    # 1 = nothing foreign
    [ "$(git rev-parse HEAD)" = "$base" ] || { echo "abort: HEAD moved; rebuild" >&2; exit 1; }
    git commit -m "..."
    ```
 
-   `-z` and `--no-renames` matter: without `-z`, git quotes non-ASCII paths and a clean commit aborts; without `--no-renames`, a peer's staged deletion that resembles your new file prints as one rename and slips through. A plain `... | grep ... && exit 1` fails open when the list is missing (grep exits 2) and aborts every clean commit if chained. If the assertion aborts, unstage the foreign path with `git restore --staged <path>` and rebuild.
+   `-z` and `--no-renames` matter: without `-z`, git quotes non-ASCII paths and a clean commit aborts; without `--no-renames`, a peer's staged deletion that resembles your new file prints as one rename and slips through. Write the assignment as `rc=0; foreign=$(...) || rc=$?`: grep exits 1 when it finds nothing foreign, which is the success case, and under `set -e` a bare assignment would abort the script right there (found by running it). A plain `... | grep ... && exit 1` fails open when the list is missing (grep exits 2) and aborts every clean commit if chained. If the assertion aborts, unstage the foreign path with `git restore --staged <path>` and rebuild.
 7. **A check you read runs in its own command; only an assertion that aborts may chain into the commit.** A chained check is read after the commit has shipped. ([The check that cannot stop the action](../casebook/the-check-that-cannot-stop-the-action.md).)
 8. **Never `--amend`; make a second commit.** An amend rewrites whatever HEAD is now, so a peer's commit that landed after yours ships under your message.
 
