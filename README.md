@@ -124,8 +124,9 @@ A protocol is a plain markdown file that nothing loads until you name it ("run P
 - **Invocation is exactly when you say.** No description match decides it.
 - **The count doesn't matter.** You can write as many as you like without watching your context. A protocol that falls out of use costs nothing and doesn't need maintaining; it just sits there. (`CLAUDE.md` tells the agent to read a protocol's file before running it, so what runs is the current text, not a remembered copy.)
 - **It works in any harness.** There is no skills directory to port.
+- **You know how closely to follow it.** A protocol is followed as written. If you later add reusable shapes that an agent should adapt rather than execute, keep them in a separate place under a different name (we call them patterns), so the agent never has to guess how strictly to treat what it just read.
 
-What you give up: nothing volunteers a protocol you didn't think to ask for. The protocol table in `CLAUDE.md` is the mitigation. A one-line row each is the only always-loaded cost, and a protocol you rarely run doesn't need a row. If you like skills anyway, nothing stops you from adding one whose body says "run Protocol N"; keep the procedure in the protocol so the skill can't go stale.
+What you give up: nothing volunteers a protocol you didn't think to ask for. `CLAUDE.md` carries a single pointer to `protocols/_index.md`, which lists them all and is read only when the agent needs it, so the discovery gap is an index lookup away and the always-loaded cost stays at one line however many protocols you write. If you like skills anyway, nothing stops you from adding one whose body says "run Protocol N"; keep the procedure in the protocol so the skill can't go stale.
 
 # Why Pay Tokens Up Front: The Propagation Problem
 
@@ -185,6 +186,7 @@ your-wiki/
 │   ├── ai-managed-wiki.md     <- How this wiki works
 │   └── human-readability.md   <- Criteria for human-executable docs (Protocol 9)
 ├── protocols/
+│   ├── _index.md
 │   ├── 0-setup.md             <- Guided first-run onboarding (start here)
 │   ├── 1-harmonize.md
 │   ├── 2-spot-check.md

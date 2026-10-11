@@ -74,7 +74,7 @@ Common triggers — don't limit yourself to this list:
 - New section or topic → update `home.md` links
 - Changed configuration → update relevant overview pages
 - New project → update project index
-- New protocol or protocol change → update the protocol table in `CLAUDE.md`
+- New protocol or protocol change → update `protocols/_index.md`
 - Bug diagnosed or incident resolved → update troubleshooting docs
 
 The goal is that someone reading the wiki tomorrow sees the world as it is now, not as it was before this session. Walk through modified files and conversation decisions and ask: *"Does any other page reference this, or should any other page now link to this? Is there a page that's now wrong?"*
@@ -144,7 +144,7 @@ When the diff touches a known drift-prone area, run the matching check below. A 
 |---|---|
 | Any `CLAUDE.md` | Spot-check 3 cross-references: do the paths and facts still match? |
 | A new content page | Verify the parent section index (and `home.md`, if it's a new section) carries a row for it. New pages created after their index's last edit are the classic orphan source. |
-| A protocol file | Verify the protocol table in `CLAUDE.md` and the list in `README.md` still match. |
+| A protocol file | Verify `protocols/_index.md` and the list in `README.md` still match. |
 <!-- Add rows here as Protocol 10 codifies recurring drift patterns for your wiki. -->
 
 ### 3. Stage and Commit

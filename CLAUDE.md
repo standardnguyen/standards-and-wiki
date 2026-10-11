@@ -40,7 +40,7 @@ This is a personal wiki maintained as markdown files, serving as documentation f
   - `mining-session-logs.md` — How to mine old session logs for rules worth codifying
 - `continuations/` — Parked task briefings a cold future session can resume from (Protocols 12/13)
 - `casebook/` — Failure mechanisms: the reasons behind the protocols (start at `casebook/_index.md`)
-- `protocols/` — Structured maintenance workflows (0-23; 0 is the guided first-run setup)
+- `protocols/` — Structured maintenance workflows (numbered; 0 is the guided first-run setup; listed in `protocols/_index.md`)
 - `.claude/hooks/wiki-rag.py` — optional synthetic-RAG retrieval hook (see Protocol 11); `.claude/settings.json.example` shows how to wire it
 
 <!-- Customize: update this to match your actual directory structure as it grows. -->
@@ -101,36 +101,11 @@ Protocols are stored in `protocols/` as individual files. When a protocol is inv
 
 **The hand-hold rule.** If the user says **"can you hold my hand through this bb"** (or any plainer version of "I'm confused, go slower"), the answer is always **yes**: switch to guided mode — one small step at a time, explain what you're about to do and why in plain language before doing it, check in after each step, and don't move on until they're with you. This applies anywhere: mid-protocol, mid-setup, mid-anything. It is a standing promise made in the README; honor it.
 
-| Protocol | Description | File |
-|----------|-------------|------|
-| 0 | Setup — guided first-run onboarding; the agent interviews the user and customizes the template | `protocols/0-setup.md` |
-| 1 | Full harmonization pass — fix contradictions, anachronisms, tone | `protocols/1-harmonize.md` |
-| 2 | Random-sample spot-check for contradictions across file pairs | `protocols/2-spot-check.md` |
-| 3 | Verify — generate commands to check ground truth before accepting fixes | `protocols/3-verify.md` |
-| 4 | Recursive harmonize — apply Protocol 1 to recent changes, repeat until convergence | `protocols/4-recursive-harmonize.md` |
-| 5 | Session log setup — create session logging infrastructure for a new project | `protocols/5-session-log-setup.md` |
-| 6 | Homepage coverage — check that every wiki page is reachable from `home.md` | `protocols/6-homepage-coverage.md` |
-| 7 | Commit, ship & prepare for continuation — commit, push, create/update PR, update session logs, hand the work forward | `protocols/7-commit-and-ship.md` |
-| 8 | Design project sub-protocols — codify recurring patterns inside a project as project-scoped sub-protocols | `protocols/8-design-project-subprotocols.md` |
-| 9 | Human-readability audit — validate that protocols and reference pages are executable without an LLM in the loop | `protocols/9-human-readability-audit.md` |
-| 10 | Codify drift check — promote a recurring drift pattern into a permanent structural check at commit time | `protocols/10-codify-drift-check.md` |
-| 11 | Wiki-RAG maintenance — keep the synthetic-RAG retrieval hook's alias/stopword tables accurate as the wiki grows | `protocols/11-wiki-rag-maintenance.md` |
-| 12 | Park — stash a self-contained continuation so a cold future session can resume the work | `protocols/12-park.md` |
-| 13 | Pick up — resume a parked continuation, re-grounding against live state first | `protocols/13-pickup.md` |
-| 14 | UI convergence — recursive fresh-QA-agent loop over a user-facing surface until a round comes back clean | `protocols/14-ui-convergence.md` |
-| 15 | LLM injection scan — sweep the wiki and its rules files for prompt-injection patterns; audit only, never auto-clean | `protocols/15-llm-injection-scan.md` |
-| 16 | Fact-check — verify a page's claims against external sources, classify each, and fix only with permission | `protocols/16-fact-check.md` |
-| 17 | Conversation forensics — find the turn where a session went wrong and name the root cause | `protocols/17-conversation-forensics.md` |
-| 18 | Tighten — place a unit of knowledge where the retrieval need will actually load it | `protocols/18-tighten.md` |
-| 19 | Cold read — put an unprimed fresh process in front of the wiki and fix what trips it | `protocols/19-cold-read.md` |
-| 20 | Ship retrospective — after the session log in a full Protocol 7, ask three evidence-based questions of the run and make at most three proposals | `protocols/20-ship-retrospective.md` |
-| 21 | Shared-checkout commit — commit safely when other sessions edit the same checkout: pathspec vs. index form, never amend, verify what shipped | `protocols/21-shared-checkout-commit.md` |
-| 22 | Session-limit baton — at a usage or context limit, write a self-contained handoff and fix the project setup so the next session starts cheaper | `protocols/22-session-limit-baton.md` |
-| 23 | Propagation sweep — when a commit changes a fact, find and fix every other page still carrying the old value: checks first, then three capped waves of finders, two-lens judging | `protocols/23-propagation-sweep.md` |
+The full list, with one-line descriptions, is in [`protocols/_index.md`](protocols/_index.md). It is read on demand, not loaded every session: nothing about a protocol costs context until you name it.
 
-<!-- Customize: add your own protocols as you develop repeatable workflows. -->
+<!-- Customize: add your own protocols as you develop repeatable workflows, and add a row for each in protocols/_index.md. -->
 
-**Root protocols vs. sub-protocols.** The numbered protocols above are root-level — they apply across the whole wiki. Individual sub-projects may define their own **sub-protocols** in their project-local `CLAUDE.md` (or in a `subprotocols/` directory), numbered independently within the project namespace. A sub-project's "Sub-Protocol 0" is unrelated to root Protocol 0. If a project defines sub-protocols, label them "Sub-Protocol N" rather than "Protocol N" to avoid collision with the root numbering. See Protocol 8 for how to design and register them.
+**Root protocols vs. sub-protocols.** The numbered protocols in `protocols/_index.md` are root-level — they apply across the whole wiki. Individual sub-projects may define their own **sub-protocols** in their project-local `CLAUDE.md` (or in a `subprotocols/` directory), numbered independently within the project namespace. A sub-project's "Sub-Protocol 0" is unrelated to root Protocol 0. If a project defines sub-protocols, label them "Sub-Protocol N" rather than "Protocol N" to avoid collision with the root numbering. See Protocol 8 for how to design and register them.
 
 ## Session Logging
 
