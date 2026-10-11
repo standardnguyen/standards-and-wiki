@@ -81,6 +81,8 @@ For ongoing work where the status may change, anchor the statement to a date. Th
 | The encryption is in progress. | As of February 2026, the encryption is in progress. |
 | The feature is not yet supported. | As of February 2026, the feature is not supported. |
 
+**For state that lives outside the wiki, stamp the time you checked it.** A pull request's status or commit count, a ticket's column, a service being up or down, a deployed version: write `PR #<n> open, <k> commits (checked <date> <time>)`. Nothing in the wiki changes when the outside state does, so an unstamped status reads as current on whatever day it is opened. Handoff notes are the usual carrier.
+
 ### Decided but not built: say both, in that order
 
 The categories above cover *exists* and *planned*. They miss the state most likely to be written wrong: **a decision that has been made and not yet executed.** The pull is to write it as done, because the deciding is the memorable part and the doing has not happened yet.

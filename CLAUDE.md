@@ -40,7 +40,7 @@ This is a personal wiki maintained as markdown files, serving as documentation f
   - `mining-session-logs.md` — How to mine old session logs for rules worth codifying
 - `continuations/` — Parked task briefings a cold future session can resume from (Protocols 12/13)
 - `casebook/` — Failure mechanisms: the reasons behind the protocols (start at `casebook/_index.md`)
-- `protocols/` — Structured maintenance workflows (0-19; 0 is the guided first-run setup)
+- `protocols/` — Structured maintenance workflows (0-23; 0 is the guided first-run setup)
 - `.claude/hooks/wiki-rag.py` — optional synthetic-RAG retrieval hook (see Protocol 11); `.claude/settings.json.example` shows how to wire it
 
 <!-- Customize: update this to match your actual directory structure as it grows. -->
@@ -49,7 +49,7 @@ This is a personal wiki maintained as markdown files, serving as documentation f
 
 `casebook/` holds one entry per way that careful work fails while looking correct — a check that can't stop the action, a probe that reads the same whether the thing happened or not, a claim that gets stronger by being written down. Each entry is a mechanism, not an anecdote, and each ends with a **trigger**: the recognizable situation that should make you go looking for it.
 
-Read it once. Then, whenever a protocol step seems like ceremony, check whether there's an entry explaining it — the step is usually there because the obvious version of it fails silently. The index lists the chapters and the entries still to be written.
+Read it once. Then, whenever a protocol step seems like ceremony, check whether there's an entry explaining it — the step is usually there because the obvious version of it fails silently. The index lists the chapters and every entry.
 
 <!-- Customize: extend the casebook with mechanisms you hit yourself. The entry format is in casebook/_index.md — the value is in the *trigger* line, so that the situation does the reminding. -->
 
@@ -66,7 +66,7 @@ Read it once. Then, whenever a protocol step seems like ceremony, check whether 
 
 - **Default branch: `dev`** — Work on the `dev` branch unless told otherwise. Simply commit to `dev` and push.
 - If `dev` does not exist locally, create it from `main`: `git checkout -b dev origin/main`
-- **Never rebase or bulk-stage without explicit user permission.** Concurrent sessions and background tools may modify the working tree, so `git rebase`, `git add .`, `git add -A`, and `git add -u` can silently bundle unrelated work into your commit. Always enumerate the exact paths you touched, run `git diff --cached --stat` before every commit to verify the file list is yours, and `git restore --staged <path>` on anything unfamiliar. **Run that check as its own command — never chained into the commit with `&&`.** Chained, the file list and the commit land in one result, so you read the list *after* it has already shipped; the check becomes decorative, which is exactly when it will be wrong. The general shape is worth recognizing elsewhere: **a verification step folded into the action it verifies cannot stop that action.**
+- **Never rebase or bulk-stage without explicit user permission.** Concurrent sessions and background tools may modify the working tree, so `git rebase`, `git add .`, `git add -A`, and `git add -u` can silently bundle unrelated work into your commit. Always enumerate the exact paths you touched, run `git diff --cached --stat` before every commit to verify the file list is yours, and `git restore --staged <path>` on anything unfamiliar. **Run that check as its own command — never chained into the commit with `&&`.** Chained, the file list and the commit land in one result, so you read the list *after* it has already shipped; the check becomes decorative, which is exactly when it will be wrong. The general shape is worth recognizing elsewhere: **a verification step folded into the action it verifies cannot stop that action.** When other sessions or background jobs share the checkout, commit per [Protocol 21](protocols/21-shared-checkout-commit.md): pathspec commits for files only you touched, a plain `git commit` for a hand-reconstructed file, and never `--amend`.
 - When changes are ready for review, create or update a pull request from `dev` to `main`
 - Never push directly to `main`; all changes go through PRs for human review
 
@@ -123,6 +123,10 @@ Protocols are stored in `protocols/` as individual files. When a protocol is inv
 | 17 | Conversation forensics — find the turn where a session went wrong and name the root cause | `protocols/17-conversation-forensics.md` |
 | 18 | Tighten — place a unit of knowledge where the retrieval need will actually load it | `protocols/18-tighten.md` |
 | 19 | Cold read — put an unprimed fresh process in front of the wiki and fix what trips it | `protocols/19-cold-read.md` |
+| 20 | Ship retrospective — after the session log in a full Protocol 7, ask three evidence-based questions of the run and make at most three proposals | `protocols/20-ship-retrospective.md` |
+| 21 | Shared-checkout commit — commit safely when other sessions edit the same checkout: pathspec vs. index form, never amend, verify what shipped | `protocols/21-shared-checkout-commit.md` |
+| 22 | Session-limit baton — at a usage or context limit, write a self-contained handoff and fix the project setup so the next session starts cheaper | `protocols/22-session-limit-baton.md` |
+| 23 | Propagation sweep — when a commit changes a fact, find and fix every other page still carrying the old value: checks first, then three capped waves of finders, two-lens judging | `protocols/23-propagation-sweep.md` |
 
 <!-- Customize: add your own protocols as you develop repeatable workflows. -->
 
@@ -184,7 +188,7 @@ Never display private keys, API tokens, passwords, or other credentials in the c
 
 ## Subagent Workflow
 
-Subagents are useful for broad read-only context-gathering and for delegating the propagation sweep in Protocol 7. Three standing constraints:
+Subagents are useful for broad read-only context-gathering and for delegating the propagation sweep ([Protocol 23](protocols/23-propagation-sweep.md)). Three standing constraints:
 
 - **There is no real sandbox.** Subagents inherit the parent's tools — a subagent with shell access escapes any tool whitelist you thought you had. Scope them by prompt, and re-state prohibitions in every agent's briefing; a fence stated to one agent does not bind the next.
 - **Background agents can't ask for interactive permission.** They fail silently on writes to paths that weren't pre-approved. Give them a pre-approved scratch directory to stage into, and move files to their destination yourself afterward.
@@ -219,7 +223,7 @@ Coding-behavior rules. Rules 1–4 are adapted from Andrej Karpathy's observatio
 - State your assumptions explicitly. If uncertain, ask.
 - If multiple reasonable interpretations exist, present them — don't silently pick one. The cost of one clarifying question is lower than the cost of building the wrong thing.
 - If a simpler approach exists, say so. Push back when warranted.
-- If something is unclear, stop. Name what's confusing. Ask.
+- If something is unclear, stop. Name what's confusing. Ask — then wait: while a question of yours is open, do no prep that copies data or builds (a read-only look is fine), because the answer can void it.
 
 **2. Simplicity first.** Minimum code that solves the problem. Nothing speculative.
 
@@ -234,7 +238,7 @@ Coding-behavior rules. Rules 1–4 are adapted from Andrej Karpathy's observatio
 - Match the existing style even if you'd write it differently.
 - Every changed line should trace directly to what was asked.
 - When your edits orphan an import/variable/function, clean those up — but don't sweep pre-existing dead code unless asked.
-- **Propagation rule:** When you change a fact (a count, an address, a status, a name, a date, a price), `grep -rn "<old value>" . --include='*.md'` before committing — **and make sure that sweep reaches `CLAUDE.md` and `.claude/` too, not just your content directories.** On a large wiki the same fact often appears in many places; changing one page and leaving the others is the single largest source of wiki drift. If the grep turns up pages you're unsure about, list them for the user rather than skipping silently.
+- **Propagation rule:** When you change a fact (a count, an address, a status, a name, a date, a price), `grep -rn --exclude-dir=logs "<old value>" .` before committing — **and make sure that sweep reaches `CLAUDE.md` and `.claude/` too, not just your content directories.** On a large wiki the same fact often appears in many places; changing one page and leaving the others is the single largest source of wiki drift. If the grep turns up pages you're unsure about, list them for the user rather than skipping silently.
 
   **The widened paths are load-bearing.** A propagation rule scoped to "the wiki" quietly excludes the instruction file it is written in — which is usually the *most-read* surface in the repo. That exclusion is invisible: nobody greps a location they were never told about, so the file drifts while every page around it stays true. **A propagation rule that cannot see the file it is written in is a shape worth looking for elsewhere, too.**
 - **Homeless information rule:** When a session produces a new fact or reference that should be in the wiki but has no obvious page to live on, **do not silently drop it.** Search for candidate pages (`grep -ri` for related terms), and either add it to the best-fit existing page or create a new one. If genuinely unsure where it belongs, surface it to the user: *"I learned X but there's no wiki page for it — should I add it to Y, create a new page, or note it in the session log?"* The failure mode: the agent discovers a fact, notes it internally, and moves on without persisting it anywhere — the next session has no way to know.
@@ -251,7 +255,7 @@ Transform tasks into verifiable goals: "Add validation" → "Write tests for inv
 
 Strong success criteria let Claude loop independently. Weak criteria ("make it work") force constant clarification.
 
-**A test that has never failed is a hypothesis, not a guard.** Before trusting a *new* test as a regression pin, break the thing it guards and watch it fail — and check that the failure *names the offender*, not just "assertion failed." Two failure modes this catches, both of which look green: a **circular** test that derives its expectation from the very list it is checking (it passes exactly when that list is wrong), and a **dead sentinel** — a check nested under a match on some string or marker that has since changed, so the valuable half silently never runs. Corollary: keep a safety check *independent* of the readiness check it sits near, so a stale sentinel costs a noisy warning rather than the guard itself.
+**A test that has never failed is a hypothesis, not a guard.** Before trusting a *new* test as a regression pin, break the thing it guards and watch it fail — and check that the failure *names the offender*, not just "assertion failed." Two failure modes this catches, both of which look green: a **circular** test that derives its expectation from the very list it is checking (it passes exactly when that list is wrong), and a **dead sentinel** — a check nested under a match on some string or marker that has since changed, so the valuable half silently never runs. Corollary: keep a safety check *independent* of the readiness check it sits near, so a stale sentinel costs a noisy warning rather than the guard itself. **The inverse is not evidence either: a guard you never watched *fire* is not one you have watched fail.** A non-firing protection and a disabled one look identical from outside, so before calling anything "off" or "inert", find its *threshold* and compare it to the quantity — an absence of firing is a fact about the workload, not about the guard.
 
 **The same demand applies to a *probe*, and a probe is what you reach for when you are in a hurry — so it gets checked less.** Before trusting any measurement, ask **what it would read in the case you are trying to rule out**. *A probe that returns the same value in both branches is not a test.* It does not fail loudly; it reports the answer you were hoping for, forever. Cheap defense: make the probe answer a **known positive case** before you trust its negatives — and when it fails that control, believe the control. A probe that cannot reproduce an answer you already know is reporting on the wrong layer, which is itself the finding. Watch especially for a probe that locates its subject by a property the control also has: "find the first row containing X" silently measures the *control's* row the moment the subject is set to the control's value, so it degenerates exactly when you are comparing the two. Locate the subject by something only it has. **The same rule governs any change-detector: key it on content, never on a derived aggregate** — a length, count, or size collides across the very change you built it to catch, and then never fires again.
 

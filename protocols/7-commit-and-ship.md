@@ -114,7 +114,7 @@ This is the inverse of regular harmonization: instead of catching wiki contradic
 
 The files you changed this session likely have *cross-references* — other wiki pages that name the same service, share a concept, reference the same identifier/path/script, or describe an adjacent part of the system. A change to one page can silently contradict a sibling page that wasn't touched.
 
-**Run [Protocol 4 Recursive Harmonize](4-recursive-harmonize.md)** seeded from the files changed this session.
+**Run [Protocol 4 Recursive Harmonize](4-recursive-harmonize.md)** seeded from the files changed this session. Protocol 4 reads committed changes and commits and pushes its own fixes, so either commit your work first or seed it from the working-tree diff and leave the push to §4.
 
 If the session's changes are surgical and obviously local (a one-line typo fix, a single-file session log entry with no cross-cutting facts), skip — Protocol 4 is for changes whose blast radius plausibly touches the broader graph. When in doubt, run it; the cost is grep cycles, the cost of skipping is a contradiction that bites in three months.
 
@@ -125,18 +125,12 @@ When this session **changed a fact** — a count, an address, a port, a path, a 
 **Grep first, then scope the fix.** Run the grep *before* choosing which lines to edit — it is the scoping tool, not after-the-fact verification:
 
 ```bash
-grep -rn "<old value>" . --include='*.md'
+grep -rn --exclude-dir=logs "<old value>" .
 ```
 
 This is the single most common recurring drift class: a fix corrects one page and a sibling keeps the old value. When delegating fixes, **scope each worker by the grep result, never by a hand-listed set of lines** — the lines you did not list are exactly where the sibling drift survives.
 
-**Delegate the sweep rather than hand-enumerating.** The rule above tends to fail not at the grep but at the *enumeration*: the shipping session has to list every changed fact at the exact moment its context is fullest, and under-enumeration is **silent**. So after staging (§3, before commit), hand **one read-only agent** the staged diff and this job:
-
-1. From `git diff --cached`, extract every changed **fact** as an old→new pair. Work from the diff text only, not from conversation memory.
-2. For each **old** value, grep the wiki plus `CLAUDE.md` — excluding `logs/` directories, since historical logs are never retro-edited.
-3. Report every surviving carrier with `file:line`, a verbatim quote, and a same-fact-versus-coincidental-string judgment.
-
-You verify the report, fix true stragglers **in the same commit**, and re-grep to zero. **Skip the agent only when the diff contains no factual corrections at all** — new-page-only additions, prose and formatting, log-only commits — and then the manual grep above suffices.
+**Delegate the sweep rather than hand-enumerating.** The rule above usually fails at the *enumeration*, not at the grep: the shipping session has to list every changed fact at the moment its context is fullest, and under-enumeration is silent. So when the diff holds factual corrections or changes how a mechanism works (a protocol step, a rule), run [Protocol 23 (Propagation Sweep)](23-propagation-sweep.md) on the commit SHAs after §3's commit and before §4's push. It runs your check scripts first, then at most three capped waves of read-only finders handed the SHAs (never your own list of facts), and lands the fixes as their own commits. Skip it only when the diff holds no factual corrections and changes no mechanism (new-page-only additions, prose and formatting, log-only commits); the manual grep above is then enough.
 
 This matters most in **multi-pass analysis documents**, where a later section corrects a claim from an earlier one but the original text is never updated. When you write a correction, propagate it back to the original claim and to any summary page quoting it.
 
@@ -178,7 +172,7 @@ git commit <file1> <file2> -m "..."     # commits these paths from the WORKTREE,
 - Use **pathspec** (`git commit <paths>`) for files only *you* touched. This is the common case.
 - Use **plain `git commit`** (which ships the index) for any file where you had to reconstruct a mine-only version by hand — because the pathspec form would discard your reconstruction and ship the worktree copy instead.
 
-**When your edit shares a file with another session's uncommitted change**, don't stage the whole file. Read the file **once**, hold both versions in memory, build a mine-only copy (the committed version plus your edit), commit that, then write the both-edits version back to the worktree so their change survives uncommitted. 🔴 **Capture the original bytes BEFORE writing the mine-only copy** — if you write it first and then re-read the file to build the combined version, your base *is* the mine-only copy, and their change is silently gone. Assert both edits are present exactly once before writing, and grep for their marker afterwards. ⚠️ `git diff --cached` cannot catch this: the index is correct the whole way; the damage is in the *worktree*, which none of the staging guards look at.
+**When your edit shares a file with another session's uncommitted change**, don't stage the whole file, and don't rewrite the worktree. Build the mine-only copy from the committed version plus your edit (byte-exact, from a recorded `HEAD`), stage it straight into the index, and commit with a plain `git commit`; the worktree keeps their change uncommitted, untouched. Assert on the whole index and that `HEAD` has not moved before you commit, and afterwards check by content that your marker is in `HEAD` once and theirs is not. The full procedure, with the exact commands, is [Protocol 21 (Shared-Checkout Commit)](21-shared-checkout-commit.md).
 
 **Then verify your own edit actually landed:**
 
@@ -222,8 +216,11 @@ GitHub:
   gh pr create --base main --head dev --title "..." --body "..."
 
 Gitea/Forgejo:
-  curl -s "https://your-git.example.com/api/v1/repos/OWNER/REPO/pulls?state=open" \
+  curl -sS --connect-timeout 5 -m 20 "https://your-git.example.com/api/v1/repos/OWNER/REPO/pulls?state=open" \
     -H "Authorization: token $TOKEN"
+  (Use the host you know resolves, and keep the timeouts: a guessed or
+  unreachable host either fails fast or hangs, and either reads as
+  "no PR open" or "outage" if the error is silenced.)
 
 GitLab:
   glab mr list --source-branch dev
@@ -252,13 +249,17 @@ If logging is required:
 
 3. **Update relevant wiki files** if any state has changed
 
+3a. **On a full run, run [Protocol 20 (Ship Retrospective)](20-ship-retrospective.md)** — what it writes ships with the log. The user can say "skip the retro", and you skip it out loud like any other step.
+
 4. **Stage and commit** the session log files (can be a separate commit or combined)
 
-5. **Push** the additional commit — the open PR auto-updates.
+5. **Push** the additional commits — the open PR auto-updates.
+
+No session logging configured for this project? On a full run, still run Protocol 20 and put its proposals in the continuation prompt (§7) instead of a log.
 
 ### 7. Continuation Prompt (always)
 
-**Preparing for continuation is the default of every Protocol 7 run — you do not need to be told to do it.** After completing steps 1-6, always emit a self-contained continuation prompt that a fresh session could use to pick up where this one left off: what was accomplished, what's pending, which files and PRs were touched, and any decisions or context that would otherwise be lost when this conversation ends.
+**Preparing for continuation is the default of every Protocol 7 run — you do not need to be told to do it.** After completing steps 1-6, always emit a self-contained continuation prompt that a fresh session could use to pick up where this one left off: what was accomplished, what's pending, which files and PRs were touched, and any decisions or context that would otherwise be lost when this conversation ends. Tell the resuming session to re-check the live state of any PR or deploy the prompt names, because state moves while the prompt waits: a PR described as open may have merged by the time anyone reads it.
 
 **Name what the next session must LOAD and RE-READ — with file paths, not just labels.** Spell out (a) any protocol or standing mode still in effect *and the file to re-read from disk*, and (b) the key context files: the relevant project `CLAUDE.md`, the section index, the newest session log, any reference page the work depends on. Don't write *"we were mid-Protocol 4"* and stop — write *which files to open*. The failure this closes is a continuation that drops the active protocol entirely, so the next session doesn't know it was running one.
 
@@ -275,12 +276,13 @@ A quick scan for a session that already knows the protocol. The numbered section
 - [ ] §2a project `CLAUDE.md` files updated with what was learned
 - [ ] §2b wiki-said-not-possible sweep
 - [ ] §2c Protocol 4 harmonize (skip only if the change is genuinely local)
-- [ ] §2d propagation sweep — grep every changed fact, delegate the enumeration
+- [ ] §2d propagation sweep — grep every changed fact; after §3's commit, Protocol 23 on the SHAs when the diff corrects facts or changes a mechanism
 - [ ] §2e structural drift checks matching the diff
 - [ ] §3 stage exact paths (never `-A` or `.`), `git diff --cached --stat` as its **own** command, commit with the current model's co-author line
 - [ ] §4 push `dev` — **no rebase** without explicit user permission
 - [ ] §5 PR pre-check → update the existing PR or create a new one
 - [ ] §6 session log filed (clock-stamped filename) + index row
+- [ ] §6 Protocol 20 retrospective (full runs; or skipped out loud)
 - [ ] §7 continuation prompt in a fenced code block, naming files to re-read — or a Protocol 12 park
 - [ ] **every skipped step announced out loud with an offer** (Posture) — and no judgment call reported as a constraint
 

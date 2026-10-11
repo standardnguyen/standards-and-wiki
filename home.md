@@ -80,6 +80,10 @@ Structured workflows for wiki maintenance, invoked via Claude Code.
 - [Protocol 17: Conversation Forensics](/en/protocols/17-conversation-forensics) — Find the turn where a session went wrong, and name why
 - [Protocol 18: Tighten](/en/protocols/18-tighten) — Place a unit of knowledge where the retrieval need will actually load it
 - [Protocol 19: Cold Read](/en/protocols/19-cold-read) — Put an unprimed reader in front of the wiki and fix what trips it
+- [Protocol 20: Ship Retrospective](/en/protocols/20-ship-retrospective) — After the session log in a full Protocol 7, ask what the run itself taught and make at most three proposals
+- [Protocol 21: Shared-Checkout Commit](/en/protocols/21-shared-checkout-commit) — Commit safely when other sessions edit the same checkout
+- [Protocol 22: Session-Limit Baton](/en/protocols/22-session-limit-baton) — At a usage or context limit, write a self-contained handoff and fix the project setup
+- [Protocol 23: Propagation Sweep](/en/protocols/23-propagation-sweep) — When a commit changes a fact, find and fix every other page still carrying the old value
 
 ---
 
