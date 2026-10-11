@@ -222,8 +222,11 @@ GitHub:
   gh pr create --base main --head dev --title "..." --body "..."
 
 Gitea/Forgejo:
-  curl -s "https://your-git.example.com/api/v1/repos/OWNER/REPO/pulls?state=open" \
+  curl -sS --connect-timeout 5 -m 20 "https://your-git.example.com/api/v1/repos/OWNER/REPO/pulls?state=open" \
     -H "Authorization: token $TOKEN"
+  (Use the host you know resolves, and keep the timeouts: a guessed or
+  unreachable host either fails fast or hangs, and either reads as
+  "no PR open" or "outage" if the error is silenced.)
 
 GitLab:
   glab mr list --source-branch dev
@@ -258,7 +261,7 @@ If logging is required:
 
 ### 7. Continuation Prompt (always)
 
-**Preparing for continuation is the default of every Protocol 7 run — you do not need to be told to do it.** After completing steps 1-6, always emit a self-contained continuation prompt that a fresh session could use to pick up where this one left off: what was accomplished, what's pending, which files and PRs were touched, and any decisions or context that would otherwise be lost when this conversation ends.
+**Preparing for continuation is the default of every Protocol 7 run — you do not need to be told to do it.** After completing steps 1-6, always emit a self-contained continuation prompt that a fresh session could use to pick up where this one left off: what was accomplished, what's pending, which files and PRs were touched, and any decisions or context that would otherwise be lost when this conversation ends. Tell the resuming session to re-check the live state of any PR or deploy the prompt names, because state moves while the prompt waits: a PR described as open may have merged by the time anyone reads it.
 
 **Name what the next session must LOAD and RE-READ — with file paths, not just labels.** Spell out (a) any protocol or standing mode still in effect *and the file to re-read from disk*, and (b) the key context files: the relevant project `CLAUDE.md`, the section index, the newest session log, any reference page the work depends on. Don't write *"we were mid-Protocol 4"* and stop — write *which files to open*. The failure this closes is a continuation that drops the active protocol entirely, so the next session doesn't know it was running one.
 
