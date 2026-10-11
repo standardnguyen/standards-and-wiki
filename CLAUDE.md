@@ -40,7 +40,7 @@ This is a personal wiki maintained as markdown files, serving as documentation f
   - `mining-session-logs.md` — How to mine old session logs for rules worth codifying
 - `continuations/` — Parked task briefings a cold future session can resume from (Protocols 12/13)
 - `casebook/` — Failure mechanisms: the reasons behind the protocols (start at `casebook/_index.md`)
-- `protocols/` — Structured maintenance workflows (0-19; 0 is the guided first-run setup)
+- `protocols/` — Structured maintenance workflows (0-23; 0 is the guided first-run setup)
 - `.claude/hooks/wiki-rag.py` — optional synthetic-RAG retrieval hook (see Protocol 11); `.claude/settings.json.example` shows how to wire it
 
 <!-- Customize: update this to match your actual directory structure as it grows. -->
@@ -49,7 +49,7 @@ This is a personal wiki maintained as markdown files, serving as documentation f
 
 `casebook/` holds one entry per way that careful work fails while looking correct — a check that can't stop the action, a probe that reads the same whether the thing happened or not, a claim that gets stronger by being written down. Each entry is a mechanism, not an anecdote, and each ends with a **trigger**: the recognizable situation that should make you go looking for it.
 
-Read it once. Then, whenever a protocol step seems like ceremony, check whether there's an entry explaining it — the step is usually there because the obvious version of it fails silently. The index lists the chapters and the entries still to be written.
+Read it once. Then, whenever a protocol step seems like ceremony, check whether there's an entry explaining it — the step is usually there because the obvious version of it fails silently. The index lists the chapters and every entry.
 
 <!-- Customize: extend the casebook with mechanisms you hit yourself. The entry format is in casebook/_index.md — the value is in the *trigger* line, so that the situation does the reminding. -->
 
@@ -66,7 +66,7 @@ Read it once. Then, whenever a protocol step seems like ceremony, check whether 
 
 - **Default branch: `dev`** — Work on the `dev` branch unless told otherwise. Simply commit to `dev` and push.
 - If `dev` does not exist locally, create it from `main`: `git checkout -b dev origin/main`
-- **Never rebase or bulk-stage without explicit user permission.** Concurrent sessions and background tools may modify the working tree, so `git rebase`, `git add .`, `git add -A`, and `git add -u` can silently bundle unrelated work into your commit. Always enumerate the exact paths you touched, run `git diff --cached --stat` before every commit to verify the file list is yours, and `git restore --staged <path>` on anything unfamiliar. **Run that check as its own command — never chained into the commit with `&&`.** Chained, the file list and the commit land in one result, so you read the list *after* it has already shipped; the check becomes decorative, which is exactly when it will be wrong. The general shape is worth recognizing elsewhere: **a verification step folded into the action it verifies cannot stop that action.**
+- **Never rebase or bulk-stage without explicit user permission.** Concurrent sessions and background tools may modify the working tree, so `git rebase`, `git add .`, `git add -A`, and `git add -u` can silently bundle unrelated work into your commit. Always enumerate the exact paths you touched, run `git diff --cached --stat` before every commit to verify the file list is yours, and `git restore --staged <path>` on anything unfamiliar. **Run that check as its own command — never chained into the commit with `&&`.** Chained, the file list and the commit land in one result, so you read the list *after* it has already shipped; the check becomes decorative, which is exactly when it will be wrong. The general shape is worth recognizing elsewhere: **a verification step folded into the action it verifies cannot stop that action.** When other sessions or background jobs share the checkout, commit per [Protocol 21](protocols/21-shared-checkout-commit.md): pathspec commits for files only you touched, a plain `git commit` for a hand-reconstructed file, and never `--amend`.
 - When changes are ready for review, create or update a pull request from `dev` to `main`
 - Never push directly to `main`; all changes go through PRs for human review
 
@@ -123,6 +123,10 @@ Protocols are stored in `protocols/` as individual files. When a protocol is inv
 | 17 | Conversation forensics — find the turn where a session went wrong and name the root cause | `protocols/17-conversation-forensics.md` |
 | 18 | Tighten — place a unit of knowledge where the retrieval need will actually load it | `protocols/18-tighten.md` |
 | 19 | Cold read — put an unprimed fresh process in front of the wiki and fix what trips it | `protocols/19-cold-read.md` |
+| 20 | Ship retrospective — after the session log in a full Protocol 7, ask three evidence-based questions of the run and make at most three proposals | `protocols/20-ship-retrospective.md` |
+| 21 | Shared-checkout commit — commit safely when other sessions edit the same checkout: pathspec vs. index form, never amend, verify what shipped | `protocols/21-shared-checkout-commit.md` |
+| 22 | Session-limit baton — at a usage or context limit, write a self-contained handoff and fix the project setup so the next session starts cheaper | `protocols/22-session-limit-baton.md` |
+| 23 | Propagation sweep — when a commit changes a fact, find and fix every other page still carrying the old value: checks first, then three capped waves of finders, two-lens judging | `protocols/23-propagation-sweep.md` |
 
 <!-- Customize: add your own protocols as you develop repeatable workflows. -->
 

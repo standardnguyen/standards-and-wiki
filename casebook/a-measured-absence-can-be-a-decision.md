@@ -51,6 +51,8 @@ And when a measurement and a document disagree, do not resolve the conflict by c
 
 Fix the check where you can. An enforcement layer that refuses to start a disabled unit, rather than starting it and warning, converts a judgment call into a wall — and the judgment call is exactly what fails under time pressure.
 
+This entry is written from the reader's side; the writer's side is where the trap is laid. A deliberate stop leaves no trace on the page that describes the service unless the person who stopped it edits that page **in the same turn**. The usual reason they do not is reasonable: the change is live, the numbers are not in yet, and the write-up can wait for them. Then the session goes idle, and for days the page says the old world while the machine runs the new one — so the next reader finds exactly the disagreement this entry describes, with no history to resolve it. When you change something live (stop it, start it, flip a flag, turn a feature on), put a dated one-line status edit on the page that describes it before you move on. The numbers can follow. A clean working tree does not mean there is nothing to record; it can mean the record has not caught up with what you just did.
+
 ## The trigger
 
 You find something stopped, absent, or disabled, **and your documentation says it should be running.**

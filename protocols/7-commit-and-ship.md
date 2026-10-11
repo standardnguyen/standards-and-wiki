@@ -130,13 +130,7 @@ grep -rn "<old value>" . --include='*.md'
 
 This is the single most common recurring drift class: a fix corrects one page and a sibling keeps the old value. When delegating fixes, **scope each worker by the grep result, never by a hand-listed set of lines** — the lines you did not list are exactly where the sibling drift survives.
 
-**Delegate the sweep rather than hand-enumerating.** The rule above tends to fail not at the grep but at the *enumeration*: the shipping session has to list every changed fact at the exact moment its context is fullest, and under-enumeration is **silent**. So after staging (§3, before commit), hand **one read-only agent** the staged diff and this job:
-
-1. From `git diff --cached`, extract every changed **fact** as an old→new pair. Work from the diff text only, not from conversation memory.
-2. For each **old** value, grep the wiki plus `CLAUDE.md` — excluding `logs/` directories, since historical logs are never retro-edited.
-3. Report every surviving carrier with `file:line`, a verbatim quote, and a same-fact-versus-coincidental-string judgment.
-
-You verify the report, fix true stragglers **in the same commit**, and re-grep to zero. **Skip the agent only when the diff contains no factual corrections at all** — new-page-only additions, prose and formatting, log-only commits — and then the manual grep above suffices.
+**Delegate the sweep rather than hand-enumerating.** The rule above usually fails at the *enumeration*, not at the grep: the shipping session has to list every changed fact at the moment its context is fullest, and under-enumeration is silent. So when the diff holds factual corrections, commit, then run [Protocol 23 (Propagation Sweep)](23-propagation-sweep.md) on the commit SHAs before §4's push. It runs your check scripts first, then at most three capped waves of read-only finders handed the SHAs (never your own list of facts), and lands the fixes as their own commits. Skip it only when the diff holds no factual corrections at all (new-page-only additions, prose and formatting, log-only commits); the manual grep above is then enough.
 
 This matters most in **multi-pass analysis documents**, where a later section corrects a claim from an earlier one but the original text is never updated. When you write a correction, propagate it back to the original claim and to any summary page quoting it.
 
@@ -178,7 +172,7 @@ git commit <file1> <file2> -m "..."     # commits these paths from the WORKTREE,
 - Use **pathspec** (`git commit <paths>`) for files only *you* touched. This is the common case.
 - Use **plain `git commit`** (which ships the index) for any file where you had to reconstruct a mine-only version by hand — because the pathspec form would discard your reconstruction and ship the worktree copy instead.
 
-**When your edit shares a file with another session's uncommitted change**, don't stage the whole file. Read the file **once**, hold both versions in memory, build a mine-only copy (the committed version plus your edit), commit that, then write the both-edits version back to the worktree so their change survives uncommitted. 🔴 **Capture the original bytes BEFORE writing the mine-only copy** — if you write it first and then re-read the file to build the combined version, your base *is* the mine-only copy, and their change is silently gone. Assert both edits are present exactly once before writing, and grep for their marker afterwards. ⚠️ `git diff --cached` cannot catch this: the index is correct the whole way; the damage is in the *worktree*, which none of the staging guards look at.
+**When your edit shares a file with another session's uncommitted change**, don't stage the whole file. Read the file **once**, hold both versions in memory, build a mine-only copy (the committed version plus your edit), commit that, then write the both-edits version back to the worktree so their change survives uncommitted. 🔴 **Capture the original bytes BEFORE writing the mine-only copy** — if you write it first and then re-read the file to build the combined version, your base *is* the mine-only copy, and their change is silently gone. Assert both edits are present exactly once before writing, and grep for their marker afterwards. ⚠️ `git diff --cached` cannot catch this: the index is correct the whole way; the damage is in the *worktree*, which none of the staging guards look at. The full procedure, with the commit forms and the post-commit checks, is [Protocol 21 (Shared-Checkout Commit)](21-shared-checkout-commit.md).
 
 **Then verify your own edit actually landed:**
 
@@ -255,9 +249,13 @@ If logging is required:
 
 3. **Update relevant wiki files** if any state has changed
 
+3a. **On a full run, run [Protocol 20 (Ship Retrospective)](20-ship-retrospective.md)** — what it writes ships with the log. The user can say "skip the retro", and you skip it out loud like any other step.
+
 4. **Stage and commit** the session log files (can be a separate commit or combined)
 
 5. **Push** the additional commit — the open PR auto-updates.
+
+No session logging configured for this project? On a full run, still run Protocol 20 and put its proposals in the continuation prompt (§7) instead of a log.
 
 ### 7. Continuation Prompt (always)
 
@@ -278,12 +276,13 @@ A quick scan for a session that already knows the protocol. The numbered section
 - [ ] §2a project `CLAUDE.md` files updated with what was learned
 - [ ] §2b wiki-said-not-possible sweep
 - [ ] §2c Protocol 4 harmonize (skip only if the change is genuinely local)
-- [ ] §2d propagation sweep — grep every changed fact, delegate the enumeration
+- [ ] §2d propagation sweep — grep every changed fact; Protocol 23 on the SHAs when the diff corrects facts
 - [ ] §2e structural drift checks matching the diff
 - [ ] §3 stage exact paths (never `-A` or `.`), `git diff --cached --stat` as its **own** command, commit with the current model's co-author line
 - [ ] §4 push `dev` — **no rebase** without explicit user permission
 - [ ] §5 PR pre-check → update the existing PR or create a new one
 - [ ] §6 session log filed (clock-stamped filename) + index row
+- [ ] §6 Protocol 20 retrospective (full runs; or skipped out loud)
 - [ ] §7 continuation prompt in a fenced code block, naming files to re-read — or a Protocol 12 park
 - [ ] **every skipped step announced out loud with an offer** (Posture) — and no judgment call reported as a constraint
 

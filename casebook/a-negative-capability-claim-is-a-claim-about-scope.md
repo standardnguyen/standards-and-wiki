@@ -41,6 +41,8 @@ The version axis is the one to internalize, because it **looks like architecture
 
 There is also a tell that is present, unread, and diagnostic: **the file you searched contained no such code at all** — not a variant, not a partial, nothing. When an entire subsystem is absent from where it obviously belongs, the right question is *"then where is it?"* It is almost never *"then there is none."*
 
+The same shape governs claims about **yourself and your environment**, and there it cuts in both directions. One direction blocks work: a permission denial on one form of a command is generalized into "this agent cannot delete what it builds", written into the procedure, and later sessions obey it and leave the mess, while the other form of the command was allowed all along. A judgment call ("I'll skip this step") gets reported as a constraint ("this session is not allowed to"), and nobody can tell the two apart in the report. The other direction hides a hole: a safety rule written as an incapacity — *"this machine has no access to X"* — is a claim nobody re-tests, because it describes a wall rather than a duty, and it can be false the whole time it is being relied on. **An incapacity is a measurement, not a property.** Before writing "cannot", "no access" or "not allowed", name the command that tested it in this session; when a rule is written as an incapacity, write the one-line test beside it so the next reader can re-run it instead of trusting the sentence.
+
 ## What it costs
 
 The feature is not merely unbuilt. It is **classified** — as impossible, and therefore as decided. An unbuilt capability gets built. One marked "cannot be done upstream" gets closed honestly, and closing it is what prevents anyone revisiting it.

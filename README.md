@@ -11,7 +11,7 @@ Two things live here, and they answer different questions. The **protocols** are
 - **`CLAUDE.md`** — Project instructions that Claude Code loads automatically. Defines conventions, Git workflow, domain context, and protocol index.
 - **Casebook** — Failure mechanisms from a wiki that's been running for hundreds of sessions, each written as a transferable shape with a recognizable trigger. This is the part that doesn't survive a rules-only sync: it's where the *why* lives.
 - **Style guide** — Adapted from Wikipedia's Manual of Style for a personal technical wiki. Covers voice, tense, page types, words to avoid.
-- **20 protocols** — Structured maintenance workflows invoked by saying "run Protocol N":
+- **24 protocols** — Structured maintenance workflows invoked by saying "run Protocol N":
   0. **Setup** — Guided first-run onboarding: your agent interviews you and customizes the template (start here)
   1. **Harmonize** — Full editorial pass to fix contradictions, anachronisms, tone
   2. **Spot-Check** — Random-sample contradiction detection across page pairs
@@ -27,6 +27,15 @@ Two things live here, and they answer different questions. The **protocols** are
   12. **Park** — Stash a self-contained continuation so a cold future session can resume the work
   13. **Pick Up** — Resume a parked continuation, re-grounding against live state before acting
   14. **UI Convergence** — Recursive fresh-QA-agent loop over a user-facing surface until a round comes back clean
+  15. **LLM Injection Scan** — Sweep the wiki and its rules files for prompt-injection patterns; audit only
+  16. **Fact-Check** — Verify a page's claims against external sources, classify, fix with permission
+  17. **Conversation Forensics** — Find the turn where a session went wrong and name the root cause
+  18. **Tighten** — Place a unit of knowledge where the retrieval need will actually load it
+  19. **Cold Read** — Put an unprimed fresh process in front of the wiki and fix what trips it
+  20. **Ship Retrospective** — After the session log in a full Protocol 7, ask what the run itself taught and make at most three proposals
+  21. **Shared-Checkout Commit** — Commit safely when other sessions edit the same checkout
+  22. **Session-Limit Baton** — At a usage or context limit, write a self-contained handoff and fix the project setup
+  23. **Propagation Sweep** — When a commit changes a fact, find and fix every other page still carrying the old value
 - **Synthetic-RAG hook** — Optional `UserPromptSubmit` hook that greps the wiki on every prompt and injects pointers to the relevant pages (the deterministic version of "grep first"). Off by default; wire via `.claude/settings.json.example`.
 - **Homepage crawl script** — Python BFS crawler that finds orphaned pages and broken links
 - **Session logging pattern** — Append-only decision logs that prevent wiki drift across sessions
@@ -77,6 +86,48 @@ btw if you ever get confused just say "can you hold my hand through this bb" and
    "protocol 6"   — check that all pages are reachable from the homepage
    ```
 
+## Keeping the Wiki Consistent (Protocol 7)
+
+When you change one fact, the pages that still carry the old value are now wrong, and nothing tells you which ones. Protocol 7 is the pass that finds them. Run it at the end of a work session, once the change is done.
+
+**How to trigger it.** Start your agent in the repo and say any of:
+
+```
+"run protocol 7"
+"commit and ship"
+"prepare for continuation"
+"P7"
+```
+
+All four mean the same thing. The agent reads `protocols/7-commit-and-ship.md` and works through it.
+
+**What it does.**
+1. Reviews what changed in the working tree.
+2. Updates the wiki pages and project `CLAUDE.md` files that describe the change.
+3. Harmonizes related pages (Protocol 4), so a sibling page doesn't contradict the one you edited.
+4. Commits the change. When it corrects a fact (a count, an address, a name, a date, a status), it then runs the propagation sweep (Protocol 23) on that commit: check scripts first, then up to three waves of read-only finder agents that extract the changed facts from the diff and grep for each old value, with fixes landing as their own commits.
+5. Pushes `dev`, and creates or updates the pull request.
+6. Files the session log, runs a short retrospective on the run (Protocol 20), and leaves a continuation prompt so a cold future session can pick up where this one stopped.
+
+If a step doesn't apply, the agent says which step it's skipping and why, and offers a lighter version. It doesn't skip silently.
+
+**If you only want the consistency work without the full close-out** (no session log or continuation prompt), run the pieces on their own: `"protocol 4"` harmonizes recent changes, `"protocol 2"` spot-checks random page pairs for contradictions, and `"protocol 23"` sweeps named commits. Each of these still commits its own fixes, so ask for a report only if you want no commit.
+
+# Why Pay Tokens Up Front: The Propagation Problem
+
+A fact in a wiki, or in an agent's memory, is rarely written once. A count sits in a summary table, an index row, a hub description and a status line. When the fact changes and one copy is fixed, every other copy is now a contradiction, and nothing tells the next session which pages they are. That is the propagation problem, and it is one of the ways an agent-maintained knowledge store goes quietly wrong.
+
+**What the other systems document.** This is a description of what each system says it does, not a benchmark. For Hermes it comes from the source and bundled docs of v0.20.5 (dated August 2026), read in October 2026; for Claude it comes from Anthropic's own docs read the same month. These products move quickly, so check the current versions before relying on any line.
+
+- **Hermes Agent** keeps two small capped memory files. Replacing or removing an entry edits one entry found by a substring, and a substring that matches several different entries is an error, not a set to update. At the size cap it tells the model to consolidate or remove stale entries itself. Its background review mostly patches skills used in the current session. Its curator archives skills by idle time, and its merge-by-topic pass is off by default. In the built-in memory and skill stores, nothing searches for other copies of a changed fact. Its optional external memory providers advertise related features (Holographic has an on-demand `contradict` action that returns conflicting pairs, Mem0 advertises deduplication, Honcho describes a reconciliation pass); we did not test what those do to a stale copy.
+- **Claude's memory** saves topics as you chat, and you correct them by hand or by asking. The docs do not describe how a contradiction between two saved topics is resolved. Claude Code's auto memory tells the model to "merge or drop stale entries" when the index nears its size cap (and returns an error asking it to rewrite the index when it is over), and its prompt audit reports contradictions between instruction files with proposed edits that you apply on request. The closest thing to a store-wide fix is Anthropic's Dreams for Managed Agents: an asynchronous research-preview job that reads a memory store and up to 100 session transcripts and, by default, writes a new, deduplicated store for you to review.
+
+**What this template does instead.** It treats propagation as a procedure with a bounded cost. [Protocol 7](protocols/7-commit-and-ship.md) ships a change. When the change corrects a fact, [Protocol 23](protocols/23-propagation-sweep.md) runs on the commit: your check scripts first, then at most three waves of read-only finder agents handed the commit SHAs (so they extract the changed facts themselves and grep for the old values), then two judging lenses that must both agree a line is stale before it is edited. Disagreements are logged, not edited. Where a fact has many carriers, the fix is to pick one canonical home and make the rest pointers, and to delete counts of mutable sets instead of updating them. [Protocol 20](protocols/20-ship-retrospective.md) then asks what the run itself taught, so the procedure improves.
+
+**The cost, stated plainly.** This spends tokens, every time a ship changes a fact, before anything has gone wrong. The finders and judges are real agent calls, and the maintenance pass can cost a large share of a session. The sweep is capped at three waves because, in the one cycle the maintainer audited, later waves of the same question found almost nothing real (n = 1 and confounded with how those waves were scoped, so treat it as a reason to measure your own, not a law). It runs on commit SHAs because a sweep that depends on the shipping session listing the changed facts from memory fails silently when that list is incomplete.
+
+**Why it is worth paying.** The alternative is to pay later and invisibly, as a store that looks complete and contradicts itself. The bet behind this template is that whoever makes the user eat the maintenance cost up front keeps a memory that stays true, and that the cost is better spent on a bounded sweep than on an unbounded one. The [casebook](casebook/_index.md) is the record of what happens when it is not spent.
+
 ## Design Principles
 
 - **If it's not documented here, it doesn't exist.** The wiki is the source of truth.
@@ -109,7 +160,7 @@ your-wiki/
 ├── home.md                    <- Wiki homepage (edit this second)
 ├── casebook/                  <- Failure mechanisms — why the protocols are shaped this way
 │   ├── _index.md              <- Six chapters + the entry format (start here)
-│   └── *.md                   <- One entry per mechanism; ~25 more planned, listed in the index
+│   └── *.md                   <- One entry per mechanism, grouped by chapter in the index
 ├── .claude/
 │   ├── hooks/
 │   │   └── wiki-rag.py        <- Optional synthetic-RAG retrieval hook (Protocol 11)
@@ -140,6 +191,10 @@ your-wiki/
 │   ├── 17-conversation-forensics.md
 │   ├── 18-tighten.md
 │   ├── 19-cold-read.md
+│   ├── 20-ship-retrospective.md
+│   ├── 21-shared-checkout-commit.md
+│   ├── 22-session-limit-baton.md
+│   ├── 23-propagation-sweep.md
 │   └── scripts/
 │       └── homepage-crawl.py
 ├── continuations/             <- Parked task briefings (Protocols 12/13)
