@@ -60,6 +60,7 @@ Structured workflows for wiki maintenance, invoked via Claude Code.
 
 <!-- Customize: keep this list complete, or replace it with a link to the protocols index. A hand-maintained partial list on the homepage reads as a roster and silently becomes a stale one — nothing fires when a protocol is added. If you would rather not maintain it, say so explicitly here and point at the index instead. -->
 
+- [All protocols](/en/protocols) — The index: one line per protocol, read on demand
 - [Protocol 0: Setup](/en/protocols/0-setup) — Guided first-run onboarding; your agent interviews you and sets everything up
 - [Protocol 1: Harmonize](/en/protocols/1-harmonize) — Full pass to fix contradictions, anachronisms, and tone
 - [Protocol 2: Spot-Check](/en/protocols/2-spot-check) — Random-sample cross-domain contradiction detection

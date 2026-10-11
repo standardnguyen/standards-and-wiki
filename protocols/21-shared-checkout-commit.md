@@ -83,7 +83,7 @@ Because the worktree is never rewritten, this procedure cannot overwrite a peer'
 
 ## Notes
 
-- **Never bulk-stage** (`git add .`, `-A`, `-u`) and never rebase without the user's permission; see `CLAUDE.md` → Workflow. If a rebase is needed, stop and ask the user to run it themselves; if they ask you to run it, check `git status` first and leave unstaged changes you did not make alone.
+- **Never bulk-stage** (`git add .`, `-A`, `-u`) and never rebase without the user's permission; see `AGENTS.md` → Workflow. If a rebase is needed, stop and ask the user to run it themselves; if they ask you to run it, check `git status` first and leave unstaged changes you did not make alone.
 - **Coordinate live when you can.** If two sessions want to write the same file at once, having one wait a minute is cheaper than any reconstruction.
 - **Commit small and commit quickly.** Every minute an edit sits uncommitted is a minute another session can overwrite it.
 

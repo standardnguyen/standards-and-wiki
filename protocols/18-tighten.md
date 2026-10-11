@@ -9,7 +9,7 @@ The wiki is the long-term memory, and every retrieval that cost more than it sho
 "Run Protocol 18", "Tighten that", "Integrate that", "Make sure future you knows this", "Write that down somewhere a future session will find it". Also invoke it proactively when you notice any of:
 
 - You spent three or more greps or file reads locating a fact that has an obvious home.
-- The user re-explained something already documented in the wiki, a `CLAUDE.md`, or a protocol.
+- The user re-explained something already documented in the wiki, a `AGENTS.md`, or a protocol.
 - You asked a question whose answer was written down, but unreachable from where you were looking.
 - You derived a procedure or command that worked and will recur, or a shell/API call surfaced a non-obvious gotcha — a quoting trap, a required flag, the actual cause of a 401.
 - You caught yourself thinking "I'll just remember this for the rest of the session." That *is* the trigger. You won't, and the next session certainly won't.
@@ -24,8 +24,8 @@ State the information in one sentence — a fact, a procedure, a gotcha, a point
 
 | Kind of unit | Destination |
 |---|---|
-| A rule that binds behaviour every session | root `CLAUDE.md` |
-| A rule that applies only inside one project subtree | that project's `CLAUDE.md`, or its `_index.md` |
+| A rule that binds behaviour every session | root `AGENTS.md` |
+| A rule that applies only inside one project subtree | that project's `AGENTS.md`, or its `_index.md` |
 | A reference fact — an endpoint, a schema, a command, a number | the wiki page that owns that subject |
 | A procedure that recurs across sessions | a protocol file under `protocols/` |
 | A recurring failure mechanism, generalizable past the case that surfaced it | a casebook entry |
@@ -53,7 +53,7 @@ As you write it, keep three surfaces apart, because collapsing them onto one pag
 
 ### 4. Write the minimum
 
-- Match the voice of the file you are editing, and resist improving adjacent content — surgical changes only (root `CLAUDE.md` → "Doing Tasks" §3). A rule plus a one-line **why** is usually enough.
+- Match the voice of the file you are editing, and resist improving adjacent content — surgical changes only (root `AGENTS.md` → "Doing Tasks" §3). A rule plus a one-line **why** is usually enough.
 - Edit the existing page rather than spinning up a new file for a single fact, unless the topic genuinely lacks a home. Promote to a new protocol only if the procedure has recurred or clearly will; one-off procedures live on the relevant page.
 
 ### 5. Walk the retrieval chain
@@ -62,21 +62,21 @@ Routing by kind (§2) is necessary but not sufficient. **A unit that lands in th
 
 | Surface | In context when | Best for |
 |---|---|---|
-| Root `CLAUDE.md` | Every session | Rules the agent must self-recognize |
+| Root `AGENTS.md` | Every session | Rules the agent must self-recognize |
 | Retrieval-hook aliases (Protocol 11) | Every session, when the hook is wired | Routing an everyday word to its page |
-| A project's `CLAUDE.md` | Only when the working directory is inside that project | In-project rules |
+| A project's `AGENTS.md` | Only when the working directory is inside that project | In-project rules |
 | Protocol files | Only when the protocol is invoked | Numbered workflows |
 | Wiki pages | Only when a search finds them, or a loaded surface links to them | Reference facts, deep context |
 | Session logs | Only when explicitly read, usually the newest at session start | Today-specific state, hand-off notes |
 | Harness hooks and settings | The harness fires them; the agent never sees them | Mechanical enforcement, not retrieval |
 
-**Chain check.** Name the trigger that creates the retrieval need — "when the user says X" / "when the agent is about to do Y" / "when working in subtree Z". Which surfaces above are loaded at that moment? If your destination is one of them, you are done. If not, add a one-line breadcrumb from a loaded surface to the destination. **Self-recognition is the strict case:** if the trigger is the *agent* noticing a situation on its own rather than a user-typed invocation, the rule must sit on an always-loaded surface — root `CLAUDE.md`, or a hook alias reachable by breadcrumb from one — because wiki pages and session logs are not self-discoverable.
+**Chain check.** Name the trigger that creates the retrieval need — "when the user says X" / "when the agent is about to do Y" / "when working in subtree Z". Which surfaces above are loaded at that moment? If your destination is one of them, you are done. If not, add a one-line breadcrumb from a loaded surface to the destination. **Self-recognition is the strict case:** if the trigger is the *agent* noticing a situation on its own rather than a user-typed invocation, the rule must sit on an always-loaded surface — root `AGENTS.md`, or a hook alias reachable by breadcrumb from one — because wiki pages and session logs are not self-discoverable.
 
 **Common patterns:**
 
 - *Fact belongs on a page, but the need fires at session start, before any search* → register an alias so the retrieval hook routes the term to the page, and check the page is linked from its section's `_index.md`.
-- *A procedure the agent should run automatically on a recognized trigger* → root `CLAUDE.md`; one that only recurs on explicit invocation can live in a protocol file.
-- *A rule that must fire even if the agent forgets* → not retrieval but enforcement: wire it into a hook, and keep the procedure itself in the wiki rather than in harness config (root `CLAUDE.md` → "Subagent Workflow").
+- *A procedure the agent should run automatically on a recognized trigger* → root `AGENTS.md`; one that only recurs on explicit invocation can live in a protocol file.
+- *A rule that must fire even if the agent forgets* → not retrieval but enforcement: wire it into a hook, and keep the procedure itself in the wiki rather than in harness config (root `AGENTS.md` → "Subagent Workflow").
 - *Buried in a session log's hand-off note* → fine as supporting evidence, but the load-bearing rule belongs on an always-loaded surface; logs decay in attention as they age.
 
 If the answer is "only if the next session greps for the exact phrase I just used", the chain is broken. One extra cross-link is cheap; re-discovering the fact next session is what triggered this protocol.

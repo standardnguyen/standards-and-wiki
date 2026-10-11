@@ -29,7 +29,7 @@ This setup solves for documentation that:
 |-----------|------|
 | Markdown files in Git | Source of truth |
 | Claude Code (CLI) | Primary editor |
-| `CLAUDE.md` | Codified conventions, workflow rules, domain context |
+| `AGENTS.md` | Codified conventions, workflow rules, domain context |
 | Protocol files | Structured maintenance workflows |
 | Git hosting (GitHub, Gitea, etc.) | Pull request review |
 | Wiki renderer (optional) | Web UI for reading (syncs from Git) |
@@ -52,9 +52,9 @@ The wiki is a plain Git repository of markdown files covering whatever the opera
 
 No change reaches the wiki without a human reviewing the diff first.
 
-### `CLAUDE.md` — The Institutional Memory
+### `AGENTS.md` — The Institutional Memory
 
-The `CLAUDE.md` file in the repo root is what makes this repeatable across sessions. It tells Claude Code:
+The `AGENTS.md` file in the repo root is what makes this repeatable across sessions (Claude Code loads it through the `CLAUDE.md` symlink beside it). It tells the agent:
 
 - **What this repo is** — a wiki, not code
 - **How pages are structured** — internal links, tables for data, Related Pages sections
@@ -134,13 +134,13 @@ After a big change, this recursively harmonizes outward from the changed files u
 
 **Verification closes the loop.** The wiki doesn't just claim to be accurate — Protocol 3 generates commands to prove it.
 
-**`CLAUDE.md` prevents drift.** Conventions survive across sessions because they're codified, not remembered.
+**`AGENTS.md` prevents drift.** Conventions survive across sessions because they're codified, not remembered.
 
 ---
 
 ## Recommendations for Getting Started
 
-1. **Start with `CLAUDE.md`.** Spend real time on it. The better the conventions are defined, the more consistent the output.
+1. **Start with `AGENTS.md`.** Spend real time on it. The better the conventions are defined, the more consistent the output.
 2. **Use Git and PRs.** Never let the AI push directly to the main branch. Review everything.
 3. **Build verification into the workflow.** An LLM will confidently write plausible-sounding documentation that's wrong. Generating commands to check reality is what makes this trustworthy.
 4. **Keep pages interconnected.** Tables, cross-references, and Related Pages sections create a web of constraints that makes contradictions detectable.

@@ -15,9 +15,9 @@ If given a slug, read `continuations/<slug>.md`. If not, read `continuations/_in
 
 ### 2. Re-ground — don't trust the doc blindly
 
-The doc reflects what was true **when it was parked**. Verify before acting: a parked doc is a `[recalled:]`-tier source (see `CLAUDE.md` → Doing Tasks §5), not ground truth.
+The doc reflects what was true **when it was parked**. Verify before acting: a parked doc is a `[recalled:]`-tier source (see `AGENTS.md` → Doing Tasks §5), not ground truth.
 
-- **Read the canonical surfaces it names** — the project's `CLAUDE.md`, its overview page, the latest session log. These are fresher than the parked doc.
+- **Read the canonical surfaces it names** — the project's `AGENTS.md`, its overview page, the latest session log. These are fresher than the parked doc.
 - **Confirm live state** — `git log` and `git status` in the repos involved, health of anything deployed, test status. **Reconcile any drift** between the doc's Done/Next lists and reality; other sessions may have moved things.
 - **Re-read any protocol** the work will execute, per the re-read-on-invocation rule.
 

@@ -8,7 +8,7 @@ Two things live here, and they answer different questions. The **protocols** are
 
 ## What You Get
 
-- **`CLAUDE.md`** — Project instructions that Claude Code loads automatically. Defines conventions, Git workflow, domain context, and protocol index.
+- **`AGENTS.md`** — Project instructions. Most harnesses read it directly; Claude Code loads it through the `CLAUDE.md` symlink that ships beside it. Defines conventions, Git workflow, domain context, and protocol index.
 - **Casebook** — Failure mechanisms from a wiki that's been running for hundreds of sessions, each written as a transferable shape with a recognizable trigger. This is the part that doesn't survive a rules-only sync: it's where the *why* lives.
 - **Style guide** — Adapted from Wikipedia's Manual of Style for a personal technical wiki. Covers voice, tense, page types, words to avoid.
 - **Protocols** — Structured maintenance workflows invoked by saying "run Protocol N" (the full index is `protocols/_index.md`):
@@ -56,7 +56,7 @@ btw if you ever get confused just say "can you hold my hand through this bb" and
 
 1. **Fork or clone this repo.** Rename it to whatever you want.
 
-2. **Edit `CLAUDE.md`.** This is the most important file. Customize:
+2. **Edit `AGENTS.md`.** This is the most important file. Customize:
    - The "What This Is" section to describe your wiki's purpose
    - The "Repository Structure" section to match your directory layout
    - The "Workflow" section for your Git hosting (GitHub, Gitea, Forgejo, etc.)
@@ -70,7 +70,7 @@ btw if you ever get confused just say "can you hold my hand through this bb" and
    cd ~/your-wiki
    claude
    ```
-   Claude Code auto-loads `CLAUDE.md` and knows the project context. Just describe what you want.
+   Claude Code auto-loads `CLAUDE.md` (a symlink to `AGENTS.md`) and knows the project context. Just describe what you want.
 
 5. **Add content.** Tell Claude Code what to document:
    ```
@@ -103,7 +103,7 @@ All four mean the same thing. The agent reads `protocols/7-commit-and-ship.md` a
 
 **What it does.**
 1. Reviews what changed in the working tree.
-2. Updates the wiki pages and project `CLAUDE.md` files that describe the change.
+2. Updates the wiki pages and project `AGENTS.md` files that describe the change.
 3. Harmonizes related pages (Protocol 4), so a sibling page doesn't contradict the one you edited.
 4. Commits the change. When it corrects a fact (a count, an address, a name, a date, a status) or changes how a mechanism works, it then runs the propagation sweep (Protocol 23) on that commit: check scripts first, then up to three waves of read-only finder agents that extract the changed facts from the diff and grep for each old value, with fixes landing as their own commits.
 5. Pushes `dev`, and creates or updates the pull request.
@@ -122,11 +122,11 @@ In Claude Code and on claude.ai, a skill's name and description are loaded into 
 A protocol is a plain markdown file that nothing loads until you name it ("run Protocol 7") or a step points at it. So:
 
 - **Invocation is exactly when you say.** No description match decides it.
-- **The count doesn't matter.** You can write as many as you like without watching your context. A protocol that falls out of use costs nothing and doesn't need maintaining; it just sits there. (`CLAUDE.md` tells the agent to read a protocol's file before running it, so what runs is the current text, not a remembered copy.)
+- **The count doesn't matter.** You can write as many as you like without watching your context. A protocol that falls out of use costs nothing and doesn't need maintaining; it just sits there. (`AGENTS.md` tells the agent to read a protocol's file before running it, so what runs is the current text, not a remembered copy.)
 - **It works in any harness.** There is no skills directory to port.
 - **You know how closely to follow it.** A protocol is followed as written. If you later add reusable shapes that an agent should adapt rather than execute, keep them in a separate place under a different name (we call them patterns), so the agent never has to guess how strictly to treat what it just read.
 
-What you give up: nothing volunteers a protocol you didn't think to ask for. `CLAUDE.md` carries a single pointer to `protocols/_index.md`, which lists them all and is read only when the agent needs it, so the discovery gap is an index lookup away and the always-loaded cost stays at one line however many protocols you write. If you like skills anyway, nothing stops you from adding one whose body says "run Protocol N"; keep the procedure in the protocol so the skill can't go stale.
+What you give up: nothing volunteers a protocol you didn't think to ask for. `AGENTS.md` carries a single pointer to `protocols/_index.md`, which lists them all and is read only when the agent needs it, so the discovery gap is an index lookup away and the always-loaded cost stays at one line however many protocols you write. If you like skills anyway, nothing stops you from adding one whose body says "run Protocol N"; keep the procedure in the protocol so the skill can't go stale.
 
 # Why Pay Tokens Up Front: The Propagation Problem
 
@@ -150,7 +150,7 @@ A fact in a wiki, or in an agent's memory, is rarely written once. A count sits 
 - **Protocols formalize what's normally ad-hoc.** "Check if the wiki is consistent" becomes a repeatable, invocable workflow.
 - **Verification closes the loop.** Protocol 3 generates commands to prove the wiki matches reality.
 - **Session logs prevent drift.** Append-only decision records ensure continuity across Claude Code sessions.
-- **`CLAUDE.md` prevents cold starts.** Conventions survive across sessions because they're codified, not remembered.
+- **`AGENTS.md` prevents cold starts.** Conventions survive across sessions because they're codified, not remembered.
 
 ## Adapting for Your Use Case
 
@@ -170,7 +170,7 @@ The protocol system works for teams too. Protocol 1 (Harmonize) catches contradi
 
 ```
 your-wiki/
-├── CLAUDE.md                  <- Project instructions (edit this first)
+├── AGENTS.md                  <- Project instructions (edit this first)
 ├── README.md                  <- You are here
 ├── home.md                    <- Wiki homepage (edit this second)
 ├── casebook/                  <- Failure mechanisms — why the protocols are shaped this way

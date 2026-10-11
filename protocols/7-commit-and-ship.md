@@ -16,7 +16,7 @@ All of these mean the same thing and run the same protocol. If the user says onl
 
 ## Posture: Wiki as Substrate
 
-Before running any step below, hold this frame: **the wiki is not documentation. It is the substrate that the next Claude Code session loads as context.** Every page you touch in this protocol — `CLAUDE.md` files, wiki pages, session logs, protocols themselves — becomes the priors that future iterations reason from. Sloppy or partial edits don't just leave the page stale; they actively *poison* the next session's reasoning, because a partially-updated page reads as authoritative while quietly contradicting itself or the world.
+Before running any step below, hold this frame: **the wiki is not documentation. It is the substrate that the next Claude Code session loads as context.** Every page you touch in this protocol — `AGENTS.md` files, wiki pages, session logs, protocols themselves — becomes the priors that future iterations reason from. Sloppy or partial edits don't just leave the page stale; they actively *poison* the next session's reasoning, because a partially-updated page reads as authoritative while quietly contradicting itself or the world.
 
 This means:
 
@@ -59,7 +59,7 @@ If any carry unmerged commits, **offer to consolidate them into `dev` before shi
 
 ### 2. Update Wiki Files
 
-**Posture: err comprehensive, not terse.** When writing or updating wiki pages, `CLAUDE.md` files, and session logs in this step (and 2a-2c below), bias toward *more* detail than you think you'll need. Spell out the obvious. Repeat context that's "already" in an adjacent file. Include the failure mode you almost left out because "of course you'd check that." The audience isn't just future-you on the same harness — it's also dumber models, subagents, and fresh sessions whose context window doesn't include the conversation that made the thing obvious. Hand-holding here is load-bearing. Concision is a cost paid by the reader, not a virtue.
+**Posture: err comprehensive, not terse.** When writing or updating wiki pages, `AGENTS.md` files, and session logs in this step (and 2a-2c below), bias toward *more* detail than you think you'll need. Spell out the obvious. Repeat context that's "already" in an adjacent file. Include the failure mode you almost left out because "of course you'd check that." The audience isn't just future-you on the same harness — it's also dumber models, subagents, and fresh sessions whose context window doesn't include the conversation that made the thing obvious. Hand-holding here is load-bearing. Concision is a cost paid by the reader, not a virtue.
 
 Before committing, **review the full conversation** and ask:
 
@@ -81,15 +81,15 @@ The goal is that someone reading the wiki tomorrow sees the world as it is now, 
 
 If anything looks off or you're unsure whether a page needs updating, **check with the user before proceeding**.
 
-### 2a. Update Sub-CLAUDE.md Files
+### 2a. Update Sub-AGENTS.md Files
 
-Any project touched during the session may have learned new patterns, gotchas, or conventions. **Read the project's `CLAUDE.md`** (if it exists) and ask:
+Any project touched during the session may have learned new patterns, gotchas, or conventions. **Read the project's `AGENTS.md`** (if it exists) and ask:
 
 - Did we learn a new API gotcha, workflow pattern, or classification rule?
 - Did we discover how a system actually works (vs how we assumed it worked)?
 - Did the user correct our approach in a way that should apply to future sessions?
 
-Update the `CLAUDE.md` with what was learned. This is how future sessions avoid repeating mistakes.
+Update the `AGENTS.md` with what was learned. This is how future sessions avoid repeating mistakes.
 
 ### 2b. Wiki-Said-Not-Possible Sweep
 
@@ -142,7 +142,7 @@ When the diff touches a known drift-prone area, run the matching check below. A 
 
 | If the diff touches... | Check |
 |---|---|
-| Any `CLAUDE.md` | Spot-check 3 cross-references: do the paths and facts still match? |
+| Any `AGENTS.md` | Spot-check 3 cross-references: do the paths and facts still match? |
 | A new content page | Verify the parent section index (and `home.md`, if it's a new section) carries a row for it. New pages created after their index's last edit are the classic orphan source. |
 | A protocol file | Verify `protocols/_index.md` and the list in `README.md` still match. |
 <!-- Add rows here as Protocol 10 codifies recurring drift patterns for your wiki. -->
@@ -261,7 +261,7 @@ No session logging configured for this project? On a full run, still run Protoco
 
 **Preparing for continuation is the default of every Protocol 7 run — you do not need to be told to do it.** After completing steps 1-6, always emit a self-contained continuation prompt that a fresh session could use to pick up where this one left off: what was accomplished, what's pending, which files and PRs were touched, and any decisions or context that would otherwise be lost when this conversation ends. Tell the resuming session to re-check the live state of any PR or deploy the prompt names, because state moves while the prompt waits: a PR described as open may have merged by the time anyone reads it.
 
-**Name what the next session must LOAD and RE-READ — with file paths, not just labels.** Spell out (a) any protocol or standing mode still in effect *and the file to re-read from disk*, and (b) the key context files: the relevant project `CLAUDE.md`, the section index, the newest session log, any reference page the work depends on. Don't write *"we were mid-Protocol 4"* and stop — write *which files to open*. The failure this closes is a continuation that drops the active protocol entirely, so the next session doesn't know it was running one.
+**Name what the next session must LOAD and RE-READ — with file paths, not just labels.** Spell out (a) any protocol or standing mode still in effect *and the file to re-read from disk*, and (b) the key context files: the relevant project `AGENTS.md`, the section index, the newest session log, any reference page the work depends on. Don't write *"we were mid-Protocol 4"* and stop — write *which files to open*. The failure this closes is a continuation that drops the active protocol entirely, so the next session doesn't know it was running one.
 
 **Render it inside a fenced code block so the user can copy it in one click** — never as prose or a blockquote. This applies to any copy-paste artifact you hand over: continuation prompts, briefings, reusable commands.
 
@@ -273,7 +273,7 @@ A quick scan for a session that already knows the protocol. The numbered section
 
 - [ ] §1 `git status` + `git diff --stat` — every changed file intentional; side branches and worktrees enumerated, consolidation offered if any hold unmerged commits
 - [ ] §2 world-model sweep — what changed in the real world, which pages describe it
-- [ ] §2a project `CLAUDE.md` files updated with what was learned
+- [ ] §2a project `AGENTS.md` files updated with what was learned
 - [ ] §2b wiki-said-not-possible sweep
 - [ ] §2c Protocol 4 harmonize (skip only if the change is genuinely local)
 - [ ] §2d propagation sweep — grep every changed fact; after §3's commit, Protocol 23 on the SHAs when the diff corrects facts or changes a mechanism

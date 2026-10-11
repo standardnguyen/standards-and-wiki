@@ -25,7 +25,7 @@ else
 fi
 say ""
 
-say "Optional directories referenced by CLAUDE.md / README:"
+say "Optional directories referenced by AGENTS.md / README:"
 for d in projects ideas continuations; do
   if [ -d "$root/$d" ]; then
     say "  ok:    $d/ already exists"
@@ -62,9 +62,9 @@ fi
 say ""
 
 say "Next steps — edit these by hand (the installer never touches your content):"
-say "  1. CLAUDE.md  — fill the placeholders (see 'Placeholders to Fill' at the top)"
+say "  1. AGENTS.md  — fill the placeholders (see 'Placeholders to Fill' at the top)"
 say "  2. home.md    — replace the example homepage with your own"
-say "  3. Workflow   — uncomment the GitHub or Forgejo/Gitea PR block in CLAUDE.md"
+say "  3. Workflow   — uncomment the GitHub or Forgejo/Gitea PR block in AGENTS.md"
 say "  4. wiki-rag   — (optional) enable the synthetic-RAG hook: copy .claude/settings.json.example"
 say "                  to .claude/settings.json, then tend it with Protocol 11"
 say "  5. optional   — reset git history for a clean start:  rm -rf .git && git init"

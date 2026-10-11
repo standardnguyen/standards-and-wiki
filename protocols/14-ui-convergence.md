@@ -2,7 +2,7 @@
 
 Recursive QA-agent loop for user-facing surfaces: deploy a fresh poke-everything QA agent → triage its findings → fix → re-verify → deploy another *fresh* agent → repeat until a round comes back clean.
 
-The single-pass sibling is the `CLAUDE.md` rule-4 directive **"frontends get driven, not just curled."** This protocol is that directive run to a fixed point. It exists because green unit tests plus endpoint round-trips repeatedly ship user-visible defects: the origin run found seven real defects — including a cross-site-scripting sink and a scroll-yank on the core use case — in a page that had already been marked "verified" on passing tests.
+The single-pass sibling is the `AGENTS.md` rule-4 directive **"frontends get driven, not just curled."** This protocol is that directive run to a fixed point. It exists because green unit tests plus endpoint round-trips repeatedly ship user-visible defects: the origin run found seven real defects — including a cross-site-scripting sink and a scroll-yank on the core use case — in a page that had already been marked "verified" on passing tests.
 
 ## Trigger
 
@@ -57,10 +57,10 @@ Always a **new** agent, never a resumed one. Fresh eyes, no anchoring on its own
 
 - Each agent round is real spend. Two to three rounds is the normal shape; budget before starting.
 - The QA agent's transcript is disposable; its *report* is not. Every triage bin must land somewhere durable — in code, in the known-by-design list, or in the backlog. Screenshots are session-scoped evidence, not wiki material.
-- Subagents inherit the parent's full tool surface (see `CLAUDE.md` → Subagent Workflow). The fences section must re-state the prohibitions every round; a fence stated once in round 1 does not bind the round-3 agent.
+- Subagents inherit the parent's full tool surface (see `AGENTS.md` → Subagent Workflow). The fences section must re-state the prohibitions every round; a fence stated once in round 1 does not bind the round-3 agent.
 - This protocol assumes a *deployed, drivable* surface. It does not replace unit tests — it is the layer above them.
 
 ## Related
 
-- `CLAUDE.md` → Doing Tasks rule 4 ("frontends get driven, not just curled") — the single-pass directive this protocol iterates
+- `AGENTS.md` → Doing Tasks rule 4 ("frontends get driven, not just curled") — the single-pass directive this protocol iterates
 - [Protocol 2: Spot-Check](2-spot-check.md) — the same fresh-eyes-beat-self-review principle, aimed at wiki prose instead of UI

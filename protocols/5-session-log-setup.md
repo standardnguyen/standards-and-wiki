@@ -109,9 +109,9 @@ Add the session log to the project's overview/hub page so it's discoverable:
 
 Add the project to the session log check table in `protocols/7-commit-and-ship.md` so that Protocol 7 knows to prompt for a session log when changes touch this project.
 
-### 7. Update CLAUDE.md
+### 7. Update AGENTS.md
 
-Add a session logging section for the project in `CLAUDE.md`, following the pattern described in the "Session Logging" section. This ensures all future sessions know about the logging requirement.
+Add a session logging section for the project in `AGENTS.md`, following the pattern described in the "Session Logging" section. This ensures all future sessions know about the logging requirement.
 
 ## Notes
 
