@@ -22,7 +22,7 @@ One pass by the working session, or by one fresh agent when the session is deep 
 - **Failures.** Which casebook entries (`casebook/`) describe something that happened in this run.
 - **Rework.** What the run did twice.
 
-The pass may read the session log and the session transcript. Reading is not displaying: the secrets rules in root `CLAUDE.md` still govern what you print.
+The pass may read the session log and the session transcript. Reading is not displaying: the secrets rules in root `AGENTS.md` still govern what you print.
 
 ### 2. Ask three questions
 
@@ -37,7 +37,7 @@ Each proposal is three parts: **the proposal, its evidence, the cheapest change 
 1. **Certain.** Propose it through a reviewable commit, never a silent edit: make the edit. Have one reviewer check the diff cold: a fresh process given only the diff and the goal, not this session's context, and on a different model too when you have one. A reviewer that shares the author's context shares its blind spot ([casebook](../casebook/the-second-opinion-that-shares-your-blind-spot.md)). Then commit it as its own commit, so it stays reviewable on the PR, and sweep it like any other change: run Protocol 7 §2d's grep on that commit, and [Protocol 23](23-propagation-sweep.md) if it changes how a mechanism works, because a protocol edit is restated by the README, the protocol table and the checklists. Treat the reviewer's output as a claim: verify a correction it makes, and check the reverse if it agrees too quickly. If the reviewer disagrees, the proposal is uncertain: undo the edit and route it as below.
 2. **Uncertain.** Do not edit. Hand it to the user as a note, in the report and in the session log.
 
-A proposal that would grow a protocol must name what it would remove. Protocols are read on every run, so growth is a cost every future run pays (root `CLAUDE.md` → substrate edit hygiene).
+A proposal that would grow a protocol must name what it would remove. Protocols are read on every run, so growth is a cost every future run pays (root `AGENTS.md` → substrate edit hygiene).
 
 <!-- Customize: route uncertain proposals wherever your user reviews things: an inbox, an issue tracker, a notes page. -->
 

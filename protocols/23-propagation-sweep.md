@@ -39,7 +39,7 @@ Each wave is read-only finder agents handed the SHAs from step 1 (wave 1) or the
 The finder job:
 
 1. Extract every changed fact from the diff text of those SHAs as an old→new pair. Never from conversation memory. Report the pairs.
-2. Grep each old value across the whole repo (pages, `CLAUDE.md`, hooks and scripts, anything that restates facts), excluding logs by path.
+2. Grep each old value across the whole repo (pages, `AGENTS.md`, hooks and scripts, anything that restates facts), excluding logs by path.
 3. Report every surviving carrier as `file:line`, a verbatim quote, and a same-fact or coincidental-string judgment.
 
 Rules for the waves:
@@ -69,7 +69,7 @@ Report both `N confirmed` and `M distinct file:line`; neither alone counts defec
 1. **Human-reaching fixes first.** A line meant to be spoken, a message draft, a prompt a future session executes, a number someone will quote: fix those one at a time and re-verify each against the source. Never let the finders grade severity.
 2. **Canonicalize instead of updating everything.** When a fact has more than two live carriers, pick one canonical home and turn the others into pointers. Updating N carriers is work on every sweep and never reduces N. Before writing a pointer, grep the target page for the figure. Keep a figure on several pages only when it must be readable without a click. The fix agent reports a widely carried value and edits none of its carriers (rule 1 below); the shipping session canonicalizes, and those edits skip the two-lens gate because they move a fact rather than correct one.
 3. **Delete counts of mutable sets; don't update them.** An updated count is true until tomorrow. Delete it and keep the command, link or enumeration that reproduces it. Keep a count only when a date bounds the set ("N records as of <date>"), or when the sentence cannot survive without it, and then say what was counted and when. Never replace a count with "about N".
-4. **Report the class.** Group findings by mechanism. For any group of three or more, ask: what single rule, in one place, would have prevented all of them? Propose one rule per class: a writing rule goes in the style guide, a mechanically decidable one becomes a [Protocol 10](10-codify-drift-check.md) check, one that must fire while working goes in `CLAUDE.md`, and coincidence is reported as "no class here". Strengthen an existing rule before adding one.
+4. **Report the class.** Group findings by mechanism. For any group of three or more, ask: what single rule, in one place, would have prevented all of them? Propose one rule per class: a writing rule goes in the style guide, a mechanically decidable one becomes a [Protocol 10](10-codify-drift-check.md) check, one that must fire while working goes in `AGENTS.md`, and coincidence is reported as "no class here". Strengthen an existing rule before adding one.
 
 Paste these three rules into every fix brief:
 

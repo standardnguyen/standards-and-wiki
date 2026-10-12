@@ -4,7 +4,7 @@
 
 ## What This Maintains
 
-The **wiki-rag hook** (`.claude/hooks/wiki-rag.py`, wired as a Claude Code `UserPromptSubmit` hook — see `.claude/settings.json.example`) is synthetic RAG: on every prompt it greps the wiki for the prompt's proper nouns and injects pointer lines to the top-matching pages, so retrieval is a harness affordance instead of something the model must remember to do (CLAUDE.md "Doing Tasks" §0, "synthetic RAG"). It's the deterministic version of the "grep first, even when you're sure" rule.
+The **wiki-rag hook** (`.claude/hooks/wiki-rag.py`, wired as a Claude Code `UserPromptSubmit` hook — see `.claude/settings.json.example`) is synthetic RAG: on every prompt it greps the wiki for the prompt's proper nouns and injects pointer lines to the top-matching pages, so retrieval is a harness affordance instead of something the model must remember to do (AGENTS.md "Doing Tasks" §0, "synthetic RAG"). It's the deterministic version of the "grep first, even when you're sure" rule.
 
 **The content side is self-fresh** — grep reads live files, so new pages and edits are searchable the instant they land. No reindex, no embedding store, no staleness.
 
@@ -43,7 +43,7 @@ Lightweight, runs when a commit **creates a new entity hub** — a page that is 
    **Split an ambiguous name by what each spelling means** rather than sending every variant to the same hub. Where two related things share a base name, route each specific spelling to the page holding *its* answer, and let the bare, ambiguous form go to the hub that distinguishes them.
 
 3. Verify: `echo '{"prompt":"... newword ..."}' | python3 .claude/hooks/wiki-rag.py` surfaces the hub.
-4. Stage the hook change in the **same commit** as the new page — the page and its routing ship together (the propagation rule, CLAUDE.md "Doing Tasks" §3).
+4. Stage the hook change in the **same commit** as the new page — the page and its routing ship together (the propagation rule, AGENTS.md "Doing Tasks" §3).
 
 Skip entirely for leaf pages (logs, notes, recipes) — they're grep-reachable and don't need routing.
 

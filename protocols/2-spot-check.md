@@ -18,7 +18,7 @@ Three gears:
 
 ### Procedure
 
-1. **Inventory** — List all `.md` content files (exclude `CLAUDE.md`, `README.md`).
+1. **Inventory** — List all `.md` content files (exclude `AGENTS.md`, `README.md`).
 2. **Sample pairs** — Randomly select 40 unique pairs of files. Prefer cross-domain pairs (e.g., a containers page paired with a storage page) over same-directory pairs, since contradictions are more likely across domain boundaries.
 3. **Compare each pair** — For every pair, read both files and check for:
    - **Factual contradictions** — disagreements about specs, IPs, ports, paths, identifiers, resource allocations, or current state
@@ -79,7 +79,7 @@ Three sampling strategies, used in different ratios by Gear 2 and Gear 3:
 The original P2 method. Randomly select N cross-domain file pairs and compare for contradictions. Good at surfacing drift between unrelated pages that happen to reference the same fact. Converges fast — after 3-4 waves the same known findings dominate and new discoveries drop to near-zero.
 
 ### Spider samplers
-Start from a high-connectivity hub page (a section index, the root `CLAUDE.md`, the homepage, a busy project hub) and follow its cross-references outward for 2 hops. At each hop, check: does the linked page agree with the hub on shared facts? Do the linked pages agree with *each other*? This catches drift that hides in reference chains — where A→B is fine and B→C is fine but A contradicts C. Spiders are more expensive per agent (they read more files) but find chain-of-reference drift that random pairs miss because random rarely lands on both ends of a 2-hop chain.
+Start from a high-connectivity hub page (a section index, the root `AGENTS.md`, the homepage, a busy project hub) and follow its cross-references outward for 2 hops. At each hop, check: does the linked page agree with the hub on shared facts? Do the linked pages agree with *each other*? This catches drift that hides in reference chains — where A→B is fine and B→C is fine but A contradicts C. Spiders are more expensive per agent (they read more files) but find chain-of-reference drift that random pairs miss because random rarely lands on both ends of a 2-hop chain.
 
 ### Domain sweepers (targeted)
 Full cross-join within a specific topic cluster (e.g., all pages in one section, all protocol files). Exhaustive within their domain but blind to cross-domain drift. Best in early waves to drain intra-domain rot; diminishing returns after the first pass through each cluster.
@@ -93,7 +93,7 @@ The marathon runs many Gear-1 spot-checks back-to-back in parallel, deduping aga
 - Keep **8 P2 subagents running in parallel** at all times.
 - **Wave 1 default mix:** 4 random samplers + 2 spider samplers + 2 domain sweepers (see "Agent types" above).
 - **Adaptive reweighting (wave 2+):** Same yield-tracking rule as Gear 3 — shift slots toward agent types that find things, away from types that return empty. Minimum 1 slot per type. If random samplers dry up, replace them with spiders or targeted sweeps.
-- Spider hub selection: pick high-connectivity pages that cross domain boundaries (section indexes, the root `CLAUDE.md`, the homepage, busy project hubs). Rotate through them — don't repeat a hub until all have been spidered. **Re-spider productive hubs** with refreshed skip lists.
+- Spider hub selection: pick high-connectivity pages that cross domain boundaries (section indexes, the root `AGENTS.md`, the homepage, busy project hubs). Rotate through them — don't repeat a hub until all have been spidered. **Re-spider productive hubs** with refreshed skip lists.
 - Subagent model: **mix tiers across the wave — recall is complementary, not ranked.** A matched-trial comparison (identical inputs across model tiers) found that mid-tier, frontier-tier, and top-tier-when-affordable models each surfaced verified findings the others missed on the *same* input (largest pairwise overlap was roughly 1 in 11), all at high precision — so a single-tier wave is a recall ceiling, not just a cost/quality tradeoff. Default mix: split detection slots between **mid-tier** (fastest, wide coverage) and **frontier-tier** (deepest per-file analysis); add a top-tier lane when affordably available. **Low-tier/fast models remain unfit** for this task — they tend to skim-then-confidently-clear: a fast "comprehensive review" that affirmatively signs off on a page actually holding a verified finding, plus cross-file mashups (quoting one file's content under another file's name).
 
 ### Reporting (per subagent)
@@ -171,7 +171,7 @@ The ultramarathon roughly doubles the marathon's concurrency and adds targeted d
   - If a type's yield drops to zero for 2 consecutive waves, reduce it to the floor (2) and redistribute.
   - If a type's yield is 3×+ another type's, it gets the freed slots.
   - **Targeted grep-based sweeps** (propagation checks, dead-link scans, frontmatter audits) count as sweepers for yield tracking but are especially high-value in mid-to-late waves — prefer them over re-sweeps of already-clean domains.
-- Spider hub selection: same as Gear 2 but with more hubs to cover. After exhausting the primary list, use section `_index.md` files, project `CLAUDE.md` files, and other high-fanout pages as hubs. **Re-spider hubs that were productive** — a 2nd or 3rd pass with a refreshed skip list often finds chain drift the first pass missed.
+- Spider hub selection: same as Gear 2 but with more hubs to cover. After exhausting the primary list, use section `_index.md` files, project `AGENTS.md` files, and other high-fanout pages as hubs. **Re-spider hubs that were productive** — a 2nd or 3rd pass with a refreshed skip list often finds chain drift the first pass missed.
 - Subagent model: mixed per the Gear 2 rule.
 - Convergence threshold: **30 consecutive zero-finding runs** (vs Gear 2's 10). But see the adaptive note — the point is draining drift, not padding zeros. If the yield rate across all types drops below 0.5 findings/agent for 2 consecutive waves, that's practical convergence even if the formal streak hasn't hit 30.
 
@@ -185,7 +185,7 @@ Targeted agents rotate through domain clusters, doing full cross-joins (every fi
 |---------|-------|-----------------|
 | (section A) | `section-a/**/*.md` + its `_index.md` | identifier/address conflicts, version drift, status mismatches, count tables |
 | (section B) | `section-b/**/*.md` cross-referenced against related pages | assignment conflicts, range overlaps, naming drift |
-| protocols | `protocols/*.md` + cross-refs to `CLAUDE.md` files | index-vs-file drift, cross-protocol references, trigger collisions, step numbering |
+| protocols | `protocols/*.md` + cross-refs to `AGENTS.md` files | index-vs-file drift, cross-protocol references, trigger collisions, step numbering |
 | projects | `projects/**/_index.md` + sub-pages | status conflicts, cross-references, date conflicts |
 | cross-domain | two or more sections combined | references in one section that name facts owned by another |
 
@@ -200,6 +200,6 @@ Same as Gear 2, except:
 
 Same as Gear 2, plus:
 - Track which topic clusters have been assigned and rotate through them. Don't assign the same cluster to two concurrent targeted agents.
-- Track which spider hubs have been used. Don't repeat a hub until all primary hubs have been spidered at least once; then rotate through secondary hubs (section indexes, project `CLAUDE.md` files).
+- Track which spider hubs have been used. Don't repeat a hub until all primary hubs have been spidered at least once; then rotate through secondary hubs (section indexes, project `AGENTS.md` files).
 - After every wave completes, refresh the skip-categories list for subsequent agents with recently-logged finding patterns.
 - The (A)/(B)/(C) classification and fix rules from Gear 1 step 6 apply identically.

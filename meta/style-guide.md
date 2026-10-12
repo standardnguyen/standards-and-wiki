@@ -208,7 +208,7 @@ Weasel words attribute claims to unnamed sources or create a false impression of
 
 ## Formatting Conventions
 
-These complement the formatting rules in CLAUDE.md:
+These complement the formatting rules in AGENTS.md:
 
 - Internal links use Wiki.js format: `[Link Text](/en/path/to/page)`.
 - Tables for structured data (IPs, ports, specs, inventories).

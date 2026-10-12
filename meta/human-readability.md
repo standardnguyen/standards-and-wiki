@@ -23,7 +23,7 @@ If any of those fails, the document is LLM-only or LLM-assisted. That is accepta
 - **Decision criteria are explicit.** Any step that says "decide", "judge", "evaluate", "review" includes a rubric or worked example. LLMs confabulate criteria; humans don't, and shouldn't have to.
 - **Commands are exact.** No "check the database" without a connection string. No "look at the logs" without a path. No "run the script" without an absolute path and arg list.
 - **Harness-mediated steps have manual fallbacks.** If a step uses a subagent, a slash command, or any LLM-mediated mechanism, the underlying SSH / curl / shell equivalent is documented in the same file or a clearly-linked one.
-- **Pre-reqs are stated.** "Before running this protocol, read X and Y" appears in the file. Auto-loaded context (root CLAUDE.md, project CLAUDE.md) is not assumed — call it out explicitly when it matters.
+- **Pre-reqs are stated.** "Before running this protocol, read X and Y" appears in the file. Auto-loaded context (root AGENTS.md, project AGENTS.md) is not assumed — call it out explicitly when it matters.
 - **Error paths exist.** What does the executor do if step N fails? Where do they look? What's the escalation?
 - **Worked examples for judgment calls.** At least one filled-in example for every subjective step.
 
@@ -47,7 +47,7 @@ Some surfaces are LLM-only by design and do not need to pass this audit:
 
 - Voice / persona / register protocols — instructions for the model, no human equivalent.
 - Open-ended reasoning protocols (counterfactual analysis, model self-audit) with no deterministic human procedure.
-- Project CLAUDE.md files framed explicitly as agent briefs.
+- Project AGENTS.md files framed explicitly as agent briefs.
 
 These are tagged at the top of the file with the marker:
 

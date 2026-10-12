@@ -5,7 +5,7 @@ Guided first-run onboarding. This protocol is written to be **executed by your A
 ## Trigger
 
 - "Run Protocol 0" / "protocol 0" / "set this up for me"
-- An agent noticing this repo is still in template state (placeholder text in `CLAUDE.md` or `home.md`) should *offer* to run it.
+- An agent noticing this repo is still in template state (placeholder text in `AGENTS.md` or `home.md`) should *offer* to run it.
 
 ## For the human
 
@@ -17,30 +17,30 @@ You need exactly three things before starting:
 
 Then say: **"run protocol 0"**.
 
-And a standing offer, from the template's author: **if you ever get confused, at this step or any other, just say "can you hold my hand through this bb" and the agent will say yes** — it switches to one-small-step-at-a-time mode, explains everything it's doing, and checks in before each change. (This is a real instruction the agent follows — it's in `CLAUDE.md` — not a decorative promise.)
+And a standing offer, from the template's author: **if you ever get confused, at this step or any other, just say "can you hold my hand through this bb" and the agent will say yes** — it switches to one-small-step-at-a-time mode, explains everything it's doing, and checks in before each change. (This is a real instruction the agent follows — it's in `AGENTS.md` — not a decorative promise.)
 
 ## For the agent — the procedure
 
-Work conversationally. Ask ONE question at a time, wait for the answer, act on it, show what changed. Never dump the whole interview at once, and never fill in an answer the human didn't give — a wrong guess in `CLAUDE.md` gets loaded into every future session.
+Work conversationally. Ask ONE question at a time, wait for the answer, act on it, show what changed. Never dump the whole interview at once, and never fill in an answer the human didn't give — a wrong guess in `AGENTS.md` gets loaded into every future session.
 
 ### 1. Confirm the ground
 
-- Verify you're in a git repo with this template's shape: `CLAUDE.md`, `home.md`, `protocols/`, `meta/style-guide.md` all exist. If not, stop and say what's missing.
+- Verify you're in a git repo with this template's shape: `AGENTS.md`, `home.md`, `protocols/`, `meta/style-guide.md` all exist. If not, stop and say what's missing.
 - Check git state: `git status`, current branch, whether a remote exists. Report it in one plain sentence ("fresh clone of the template, no changes, remote points at your fork").
-- If your harness reads `AGENTS.md` instead of `CLAUDE.md`, create the symlink now: `ln -s CLAUDE.md AGENTS.md`.
+- This repo keeps its instructions in `AGENTS.md` and ships `CLAUDE.md` as a symlink to it, because Claude Code loads `CLAUDE.md` and most other harnesses read `AGENTS.md`. If your checkout lost the symlink (a zip download, Windows), recreate it now: `ln -s AGENTS.md CLAUDE.md`.
 
 ### 2. Interview — what is this wiki?
 
 Ask, one at a time, in the human's own vocabulary (no jargon):
 
-1. **"What do you want this wiki to hold?"** (home lab docs? projects? recipes? everything?) → becomes the "What This Is" section of `CLAUDE.md` and the framing of `home.md`.
-2. **"Is anyone else ever going to read it, or is it just for you?"** → sets the privacy posture in `CLAUDE.md` ("this repo is private, write freely" vs. "may be shared — keep personal detail out").
+1. **"What do you want this wiki to hold?"** (home lab docs? projects? recipes? everything?) → becomes the "What This Is" section of `AGENTS.md` and the framing of `home.md`.
+2. **"Is anyone else ever going to read it, or is it just for you?"** → sets the privacy posture in `AGENTS.md` ("this repo is private, write freely" vs. "may be shared — keep personal detail out").
 3. **"Where does the repo live?"** (GitHub? self-hosted Gitea/Forgejo? nowhere yet?) → customizes the Workflow section: branch convention, PR-vs-direct-push, and — if "nowhere yet" — offer to help create a remote, or note that local-only is fine to start.
 4. **"Any facts your agent should always know?"** (server names, household context, project names — whatever the human would be annoyed to re-explain every session) → seeds "Key Domain Context". If the answer is "I don't know yet," leave the section's placeholder comment in place; it fills naturally.
 
 ### 3. Apply the answers
 
-- Edit `CLAUDE.md`: replace every `<!-- Customize: ... -->` placeholder the interview answered. Leave the ones it didn't — visible placeholders are honest; silently-invented content is not.
+- Edit `AGENTS.md`: replace every `<!-- Customize: ... -->` placeholder the interview answered. Leave the ones it didn't — visible placeholders are honest; silently-invented content is not.
 - Edit `home.md`: real title, one-line purpose, and section stubs matching what the human said in question 1. Delete example sections that don't apply.
 - Show the human a short diff summary after each file, not a wall of text.
 

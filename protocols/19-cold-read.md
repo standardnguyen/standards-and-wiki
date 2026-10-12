@@ -35,7 +35,7 @@ Two honest limits: a second instance of the same harness buys the isolation but 
 | **A user-chosen area** | The operator names something they suspect is thin. | Adversarial, and cheap: it tests their own intuition about which pages are underspecified. |
 | **A random page + invented task** | Sample a page at random, invent a plausible task that would route through it. | Gaps in the pages nobody thinks about. Same adversarial shape as Protocol 2's random pair, aimed at the page instead of the contradiction. |
 
-**2. Phrase each as a fresh-session prompt.** No history, no priming, no "here's what I changed, check it." The reader loads context through its normal mechanism — root `CLAUDE.md`, whatever it greps for. What is reachable from a cold start is the measurement; hand-holding poisons it.
+**2. Phrase each as a fresh-session prompt.** No history, no priming, no "here's what I changed, check it." The reader loads context through its normal mechanism — root `AGENTS.md`, whatever it greps for. What is reachable from a cold start is the measurement; hand-holding poisons it.
 
 **3. Fire it and watch.** Send the prompt into the reader's session and observe. Capture its path — what it read, what it tried, where it stalled, what it concluded. Do not intervene until it finishes or clearly stalls. A loop or a stall is a finding, not a failed run.
 
@@ -45,8 +45,8 @@ Two honest limits: a second instance of the same harness buys the isolation but 
 |---|---|---|
 | **Missing context** | Needed a procedure, path, definition, or convention that is documented somewhere it did not load. | Move the doc to a surface that auto-loads, or add a cross-link from a page it does load. |
 | **Tooling blindness** | Framed a failure as "there's no way to do this" when the capability exists — an unauthenticated request read as a missing tool, a permission error read as absence. | The page for that tool, or the environment surface it misread. |
-| **Posture** | Over-cautious: asks before acting on something already authorized, stops mid-flow to reconfirm, reads a queued state as "needs a human click." | Root `CLAUDE.md` as a cross-cutting behavioral rule, or a project-scoped note if it should not apply globally. |
-| **Cold-discovery failure** | Could not find a page **that exists**. Greps the wrong vocabulary, scans the wrong directory, gives up before reaching the canonical doc. | A cross-link *from where it actually looked* to the canonical page; an alias or rename on the canonical title; a pointer from root `CLAUDE.md` if the rule is broadly applicable. |
+| **Posture** | Over-cautious: asks before acting on something already authorized, stops mid-flow to reconfirm, reads a queued state as "needs a human click." | Root `AGENTS.md` as a cross-cutting behavioral rule, or a project-scoped note if it should not apply globally. |
+| **Cold-discovery failure** | Could not find a page **that exists**. Greps the wrong vocabulary, scans the wrong directory, gives up before reaching the canonical doc. | A cross-link *from where it actually looked* to the canonical page; an alias or rename on the canonical title; a pointer from root `AGENTS.md` if the rule is broadly applicable. |
 
 The last one is the category only a cold read produces. Reactive patching sees it occasionally, but real work usually begins with the user pointing at the right page — this protocol removes the pointing.
 

@@ -23,7 +23,7 @@ Check that every wiki page is reachable from `home.md`. Fix any gaps.
    - Compares the set of reachable pages against all `.md` files on disk
    - Reports orphaned pages (exist on disk but unreachable), broken links (linked but missing on disk), and depth distribution
 
-   Excluded from the orphan check (not wiki pages): `CLAUDE.md`, `README.md` and `AGENTS.md` at any depth; `LICENSE.md` at the root; placeholder `logs/_index.md` stubs; `scratch/`, `.git/`, `.github/`, `.claude/`, `__pycache__/`. The `EXCLUDE_*` sets at the top of the script are authoritative — if this list and the script disagree, the script wins.
+   Excluded from the orphan check (not wiki pages): `AGENTS.md`, `README.md` and `AGENTS.md` at any depth; `LICENSE.md` at the root; placeholder `logs/_index.md` stubs; `scratch/`, `.git/`, `.github/`, `.claude/`, `__pycache__/`. The `EXCLUDE_*` sets at the top of the script are authoritative — if this list and the script disagree, the script wins.
 
    ⚠️ **Audit this exclusion list, don't inherit it.** An exclusion added when a directory genuinely held no wiki pages *stays* after the directory fills up with real, tracked, linked pages — and from then on the orphan check reports a clean result on a section it never looks at. That is the same failure as a detector going blind. Before trusting a green run, list what each exclusion currently hides and confirm it is still not wiki content.
 
@@ -90,7 +90,7 @@ If the crawl script is unavailable, use this heuristic approach instead.
 
 2. **Build a full page inventory.** Glob for all `.md` files, excluding:
    - `home.md` itself
-   - `CLAUDE.md`
+   - `AGENTS.md`
    - `README.md`
    - `protocols/` (these have their own section on the homepage — just verify the list is complete)
    - `*/logs/` directories (session logs, linked from their respective session-log index pages)

@@ -17,7 +17,7 @@ Run P8 when ALL of these are true:
 Don't run P8 when:
 
 - The project is new — patterns haven't emerged yet; just track work in the project's session log
-- Only one pattern exists — it's a single sub-protocol, not a system; just write it inline in the project's CLAUDE.md
+- Only one pattern exists — it's a single sub-protocol, not a system; just write it inline in the project's AGENTS.md
 - The project is wrapping up — codifying patterns for a dying project is wasted effort
 
 ## Procedure
@@ -27,7 +27,7 @@ Don't run P8 when:
 Bring yourself up to speed:
 
 - The project hub (`projects/<project>/_index.md` or equivalent)
-- The project's existing CLAUDE.md (if any)
+- The project's existing AGENTS.md (if any)
 - The project's session log + last 3-5 individual log entries
 - Any task tracker, kanban board, or issue list the project uses
 - Any reusable scripts the project has accumulated
@@ -83,11 +83,11 @@ Ask the user to approve the set, drop any that feel forced, add any you missed. 
 
 ### 5. Choose the storage layout
 
-Default: `projects/<project>/subprotocols/<N>-<slug>.md` for each, `projects/<project>/subprotocols/_index.md` as the registry, `projects/<project>/CLAUDE.md` registers them in a top-level Sub-Protocols table.
+Default: `projects/<project>/subprotocols/<N>-<slug>.md` for each, `projects/<project>/subprotocols/_index.md` as the registry, `projects/<project>/AGENTS.md` registers them in a top-level Sub-Protocols table.
 
-Numbering starts at 0 within the project namespace (per the sub-protocol numbering convention in the root CLAUDE.md → Protocols). Filename matches `N-<slug>.md`.
+Numbering starts at 0 within the project namespace (per the sub-protocol numbering convention in the root AGENTS.md → Protocols). Filename matches `N-<slug>.md`.
 
-If the project has only 2-3 sub-protocols, inlining them into `CLAUDE.md` as `## Sub-Protocol N: <Name>` headers is also valid. The dir-with-files pattern is for projects with substantive procedures.
+If the project has only 2-3 sub-protocols, inlining them into `AGENTS.md` as `## Sub-Protocol N: <Name>` headers is also valid. The dir-with-files pattern is for projects with substantive procedures.
 
 ### 6. Write each sub-protocol
 
@@ -128,11 +128,11 @@ Each file follows the root protocol shape:
 
 The "Tooling" and "Reference run" lines matter — they pin the protocol to concrete artifacts that prove it works.
 
-### 7. Write the registry / CLAUDE.md updates
+### 7. Write the registry / AGENTS.md updates
 
 `<project>/subprotocols/_index.md` is the navigation page — table of all sub-protocols with one-line descriptions.
 
-`<project>/CLAUDE.md` gets a `## Sub-Protocols` section that:
+`<project>/AGENTS.md` gets a `## Sub-Protocols` section that:
 - Lists all sub-protocols in a table
 - Names the conventions (numbering, naming, where they live)
 - Lists the reusable scripts the protocols reference (Tooling table)
@@ -143,7 +143,7 @@ Update `<project>/_index.md` to mention sub-protocols exist + link to the regist
 
 ### 9. Commit
 
-One commit. The diff is large (one file per sub-protocol + registry + CLAUDE.md + hub edit) but the scope is coherent — "design + register sub-protocols for project X."
+One commit. The diff is large (one file per sub-protocol + registry + AGENTS.md + hub edit) but the scope is coherent — "design + register sub-protocols for project X."
 
 Commit message names the count + lists the sub-protocols by name.
 
@@ -152,9 +152,9 @@ Commit message names the count + lists the sub-protocols by name.
 - **Sub-protocols can chain.** SP-0 (cleanup) often surfaces work that SP-1 / SP-2 / SP-3 handle. Document the hand-offs explicitly in the Related sections.
 - **Reference reruns prove the procedure works.** When a sub-protocol describes a pattern that just played out in a session, link the session log + commit hash that exemplifies it. This is the best documentation: "here's the protocol; here's what it looked like when we actually did it."
 - **Don't over-spec.** Sub-protocols capture *intent + structure*, not exhaustive command sequences. The right level of detail: "run the audit script (template at <path>); bucket findings; apply per-record patches" — not "here are 47 lines of shell." The script lives in the tooling references; the protocol is the playbook.
-- **Watch for protocol bloat.** If a project has 8+ sub-protocols, some probably should be merged or demoted to inline notes in the CLAUDE.md. The number is a signal, not a limit, but it's worth checking when you cross 7.
+- **Watch for protocol bloat.** If a project has 8+ sub-protocols, some probably should be merged or demoted to inline notes in the AGENTS.md. The number is a signal, not a limit, but it's worth checking when you cross 7.
 - **Re-run P8 periodically.** As a project grows, new patterns emerge. Re-running P8 every ~6 months can surface new candidates and retire stale ones. Don't delete retired sub-protocols; mark them deprecated in the registry and link to what replaced them.
 
 ## Related
 
-- Root `CLAUDE.md` → "Protocols" section — sub-protocol numbering convention
+- Root `AGENTS.md` → "Protocols" section — sub-protocol numbering convention

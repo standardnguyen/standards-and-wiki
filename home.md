@@ -41,6 +41,7 @@ How this wiki is managed and maintained.
 
 What goes wrong — and the reasons the protocols are shaped the way they are. One entry per failure mechanism, each stripped of the setting it was found in.
 
+- [Patterns](/en/patterns) — Reusable shapes an agent adapts rather than follows as written, starting with Mario and Luigi
 - [The Casebook](/en/casebook) — Index: six chapters, the entry format, and why a casebook rather than more rules
 - [Laundered confidence](/en/casebook/laundered-confidence) — Writing a claim down strengthens it without adding evidence
 - [The check that cannot stop the action](/en/casebook/the-check-that-cannot-stop-the-action) — A guard folded into the same call it guards
@@ -60,6 +61,7 @@ Structured workflows for wiki maintenance, invoked via Claude Code.
 
 <!-- Customize: keep this list complete, or replace it with a link to the protocols index. A hand-maintained partial list on the homepage reads as a roster and silently becomes a stale one — nothing fires when a protocol is added. If you would rather not maintain it, say so explicitly here and point at the index instead. -->
 
+- [All protocols](/en/protocols) — The index: one line per protocol, read on demand
 - [Protocol 0: Setup](/en/protocols/0-setup) — Guided first-run onboarding; your agent interviews you and sets everything up
 - [Protocol 1: Harmonize](/en/protocols/1-harmonize) — Full pass to fix contradictions, anachronisms, and tone
 - [Protocol 2: Spot-Check](/en/protocols/2-spot-check) — Random-sample cross-domain contradiction detection

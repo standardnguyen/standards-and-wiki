@@ -4,7 +4,7 @@
 Reads a prompt from stdin (Claude Code hook JSON *or* raw text), extracts
 candidate proper nouns, greps the wiki's `.md` files for them, and surfaces
 pointer+title lines for the top-matching pages. Makes wiki retrieval a harness
-affordance instead of model discipline (CLAUDE.md "grep first" / "synthetic RAG").
+affordance instead of model discipline (AGENTS.md "grep first" / "synthetic RAG").
 This is the deterministic version of the "grep first, even when you're sure" rule.
 
 Wire it as a Claude Code `UserPromptSubmit` command hook (see

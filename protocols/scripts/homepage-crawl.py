@@ -105,7 +105,7 @@ EXCLUDE_FILES = {
 }
 
 # Repo-facing (non-page) basenames, skipped at any depth. `AGENTS.md` is
-# commonly a symlink or twin of the sibling `CLAUDE.md` so that non-Claude
+# commonly a symlink or twin of the sibling `CLAUDE.md` (or the reverse) so that non-Claude
 # harnesses load the same project instructions; one per project directory adds
 # up fast, and every one of them reads as an orphan until excluded here.
 NON_PAGE_BASENAMES = {'CLAUDE.md', 'README.md', 'AGENTS.md'}

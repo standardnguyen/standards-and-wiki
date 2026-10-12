@@ -4,7 +4,7 @@ You are at, or close to, a usage or context limit. Do two things before you stop
 
 Works on two kinds of surface:
 
-- **An agent working in a repo** — the setup is the root `CLAUDE.md`, any project `CLAUDE.md`, and the wiki pages they point to.
+- **An agent working in a repo** — the setup is the root `AGENTS.md`, any project `AGENTS.md`, and the wiki pages they point to.
 - **A chat surface with a project workspace** — the setup is the workspace's standing instructions plus the reference files uploaded to it.
 
 <!-- Customize: name your own surfaces here, e.g. the agent harness and chat app you actually use. -->
@@ -32,7 +32,7 @@ What this one adds: it assumes there is no budget left for a full close-out, a p
 Two losses compound when a session hits its limit mid-task:
 
 1. **The task loses momentum.** Without a baton, the user has to re-explain, and the next session re-derives conclusions this one already reached.
-2. **The setup stays expensive.** Whatever made this session costly — long pasted context, scattered references, a missing or thin `CLAUDE.md`, no project workspace at all — will make the next one costly too.
+2. **The setup stays expensive.** Whatever made this session costly — long pasted context, scattered references, a missing or thin `AGENTS.md`, no project workspace at all — will make the next one costly too.
 
 ## Procedure
 
@@ -72,17 +72,17 @@ Keep it tight. The next session loads the baton as input, so every token of it c
 
 If you hit a limit, the setup is probably part of why. Decide which case you are in.
 
-**Case A — there is no project workspace, or no relevant `CLAUDE.md`.**
+**Case A — there is no project workspace, or no relevant `AGENTS.md`.**
 
 Tell the user plainly that context carried turn by turn in this conversation should live in a project setup, and give them:
 
 1. A proposed project name.
-2. The standing instructions (`CLAUDE.md` content, or the workspace's instructions) — drafted, ready to paste, not just described.
+2. The standing instructions (`AGENTS.md` content, or the workspace's instructions) — drafted, ready to paste, not just described.
 3. The files or pages worth loading as reference, each with one line on why it belongs.
 
 The goal: the next session loads this context once at the start, not piece by piece through the conversation.
 
-**Case B — there is a workspace or `CLAUDE.md`, but it did not pay its keep.**
+**Case B — there is a workspace or `AGENTS.md`, but it did not pay its keep.**
 
 Name what made this session expensive that the setup should have absorbed. Common causes:
 

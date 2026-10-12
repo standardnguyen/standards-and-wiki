@@ -20,7 +20,7 @@ Include, in this order:
 
 - **Header** — `title`, `status: open`, `parked: <YYYY-MM-DD>`. (Use frontmatter if your renderer reads it; a plain header block is fine otherwise.)
 - **What this is** — one paragraph: the task, the goal, who it's for.
-- **Load first (canonical surfaces)** — the pages a cold session must read: the project's `CLAUDE.md`, its overview/index page, the latest session log. *Point, don't duplicate* — those pages are fresher than the parked doc will be.
+- **Load first (canonical surfaces)** — the pages a cold session must read: the project's `AGENTS.md`, its overview/index page, the latest session log. *Point, don't duplicate* — those pages are fresher than the parked doc will be.
 - **Infra / loop** — how to build, test, deploy, and ship this work: the dev-loop commands, the never-do rules, the repos and branches involved.
 - **Done** — what's already shipped, with commit SHAs and PR numbers, so a pickup doesn't redo it.
 - **Next (priority order)** — the work queue, top item first, each with enough detail to start on. Flag anything explicitly deferred ("after X", "not until Y ships").
