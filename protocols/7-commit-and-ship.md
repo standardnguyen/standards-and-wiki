@@ -177,7 +177,7 @@ git commit <file1> <file2> -m "..."     # commits these paths from the WORKTREE,
 **Then verify your own edit actually landed:**
 
 ```bash
-git show HEAD:<file> | grep -c '<a string unique to your edit>'
+git show HEAD:<file> | grep -cF '<a string unique to your edit>'
 ```
 
 The mirror race is real too — another session can overwrite an edit you have *not yet staged*, between your edit and your commit, and the commit message will still claim the change as done. *"The edit tool reported success"* is evidence about the past, not about `HEAD`. Use a predicate about **your own line**, never a `head`/`tail` window around it — a window prints the neighbouring lines, and neighbouring lines in config and shell-rc files are where credentials live.

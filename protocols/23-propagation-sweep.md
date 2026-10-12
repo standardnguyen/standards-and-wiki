@@ -83,7 +83,7 @@ Each wave's fixes land as their own commits, staged by exact path per [Protocol 
 
 - Never claim a fix closed a class ("fixed everywhere") beyond what you searched. Say what you searched, or search what you say.
 - Keep correction notes short, and never record a running cycle's totals on a page; the next wave falsifies them. A note that a reader needs, such as the date a fact was last verified, stays; narration of the sweep itself does not.
-- After any tree-wide pattern rewrite, read `git diff` of your root rules file; if that file is a symlink target (or other paths link to it), a rewrite of the linked path edits it without showing you.
+- After any tree-wide pattern rewrite, read `git diff HEAD -- <your root rules file>`; if that file is a symlink target (or other paths link to it), a rewrite of the linked path edits it without showing you.
 
 After the last wave: push (when Protocol 7 called this, whichever of its steps pushes does so), update the PR, and log what each wave found, plus the lens disagreements, in the session log (or the continuation prompt, if you have no session logging).
 

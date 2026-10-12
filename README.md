@@ -8,7 +8,7 @@ Two things live here, and they answer different questions. The **protocols** are
 
 ## What You Get
 
-- **`AGENTS.md`** — Project instructions. Most harnesses read it directly; Claude Code loads it through the `CLAUDE.md` symlink that ships beside it. Defines conventions, Git workflow, domain context, and protocol index.
+- **`AGENTS.md`** — Project instructions. Most harnesses read it directly; Claude Code loads it through the `CLAUDE.md` symlink that ships beside it. Defines conventions, Git workflow and domain context, and points to the protocol index (`protocols/_index.md`).
 - **Casebook** — Failure mechanisms from a wiki that's been running for hundreds of sessions, each written as a transferable shape with a recognizable trigger. This is the part that doesn't survive a rules-only sync: it's where the *why* lives.
 - **Style guide** — Adapted from Wikipedia's Manual of Style for a personal technical wiki. Covers voice, tense, page types, words to avoid.
 - **Protocols** — Structured maintenance workflows invoked by saying "run Protocol N" (the full index is `protocols/_index.md`):
