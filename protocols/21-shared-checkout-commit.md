@@ -43,36 +43,62 @@ Tested in a throwaway repo: with index = base + your row and worktree = base + y
 
 ### 2. Mine-only reconstruction
 
-Use this when a file you must commit also holds another session's uncommitted edit, and the file is already tracked. It does not apply to a new file. Do not stage the whole file.
+Use it when a file you must commit also holds another session's uncommitted edit; a shared index file such as a session-log index is the usual case.
+The one model, stated the same way in Protocol 7 §3: make your edit first, then run the script below, which stages the mine-only copy (the file at HEAD plus your edit) straight into the index and commits it in one invocation; nothing rewrites the worktree.
+Because the write-back form it replaced (write the mine-only copy into the worktree, stage it, write the both-edits copy back) overwrote any peer write in between, and its restore step lost a peer's row unseen.
 
-The model: make your edit first, in the worktree, as usual. The worktree file is then the **both-edits copy** (their change + yours), and you never need to rewrite it. The **mine-only copy** is the file at a recorded `HEAD` plus your edit, applied by exact-once replacement on bytes. You put the mine-only copy into the **index** directly, so the worktree is never touched and a peer's late write to it cannot be overwritten.
+1. Save the script as a file, fill in its six values, and run it with `bash` from the repo root.
+   Because it builds, stages, asserts and commits in one invocation, and any pause between staging and committing is a window another session can commit through.
+2. `OLD` is the text your edit replaced and `NEW` what it made of it; every value goes in single quotes, with `'` written as `'\''`, and never into the Python.
+   Because a Python bytes literal rejects an em dash and reads `\n` as a newline, and a failed build without `pipefail` stages and commits an empty file.
+3. `MINE` and `THEIRS` are strings that only your edit and only theirs add; on a log index use the whole row, never the log id.
+   Because the id sits in both the ID column and the row's URL, so a count of 1 fails on correct data.
+4. Before staging it aborts if anything is staged, `OLD` is not exactly once at HEAD, `NEW` lacks `MINE` or holds `THEIRS`, or `NEW` adds a line the worktree lacks.
+   Because that last check is a subset of lines, which catches a mangled `NEW` (a stray indent, a lost `\r`) at any placement, where a count does not.
+5. After staging it aborts if anything else is staged, HEAD moved, or the index entry is no longer yours, and its exit trap then unstages your copy.
+   Because a stale base reverts a peer's commit, two sessions staging one file ship each other's rows, and a copy left staged ships under the next plain commit's message.
+6. After the commit it stops if HEAD is not your blob on the recorded base, or their edit has left the worktree.
+   Because a peer can still stage in the instant before `git commit`, and no index or HEAD check sees the worktree.
+7. After an abort, clear its cause and rerun: commit any staged file of yours by pathspec (§1) first; if it says `THEIRS` is at HEAD, their edit has shipped and §1 applies to yours too; if it warns that your copy is still staged, unstage it once git is free.
+   Because the pre-check refuses any staged path, whoever staged it, and the trap cannot unstage while another git process holds the index lock.
+8. When you change the script, run it in a throwaway repo through every abort branch and on the real file's shape before you rely on it, and when two runs disagree, find the hidden variable before writing either up.
+   Because each defect in its history surfaced only when it was run, and a predicate passes where its author ran it.
 
-1. **Record the base and refuse the cases this does not cover.** If the file is not in `HEAD`, or someone has already staged it, stop.
-2. **Build the mine-only bytes from that base, byte-exact, and stage them without touching the worktree:**
-
-   ```bash
-   base=$(git rev-parse HEAD)
-   git cat-file -e "$base:<file>" || { echo "abort: <file> is not in HEAD; this section does not apply" >&2; exit 1; }
-   [ -z "$(git diff --cached --name-only -- <file>)" ] || { echo "abort: <file> is already staged by someone" >&2; exit 1; }
-   mode=$(git ls-files -s -- <file> | cut -d' ' -f1)          # keeps 100644 / 100755
-   blob=$(git show "$base:<file>" | python3 -I -c '
-   import sys
-   b = sys.stdin.buffer.read()
-   old = b"<a line that appears exactly once>"
-   new = b"<that line>\n<your edit>"
-   assert b.count(old) == 1, "anchor must appear exactly once"
-   sys.stdout.buffer.write(b.replace(old, new, 1))
-   ' | git hash-object -w --stdin)
-   git update-index --cacheinfo "$mode,$blob,<file>"
-   ```
-
-   Build the bytes in a script like this, never in a shell variable: command substitution strips trailing newlines, so a variable passed to `printf '%s'` drops the file's final newline (and leaves a stray `\r` on a CRLF file), and the next appended row glues onto the last one. Never pipe a `$(...)` result straight into `hash-object`. If you must stay in shell, append a sentinel (`X=$(...; printf x); X=${X%x}`).
-3. **Assert and commit in one invocation** (§1 step 6, with `base` from step 2), and add one more assertion before the commit: `[ "$(git rev-parse :<file>)" = "$blob" ] || { echo "abort: index entry is not mine" >&2; exit 1; }`. Without the first, a peer who commits to the same file between your build and your commit has their edit reverted by yours. Without the second, two sessions running this at once overwrite each other's staged entry and each ships the other's row under its own message. Any pause between staging and committing is a window another session can commit through, and this procedure necessarily leaves the index populated.
-4. **Confirm what happened, by content.** `git rev-parse HEAD^` equals `$base`. `git diff --numstat HEAD^ HEAD -- <file>` shows only your additions; any deletion you did not make means you reverted someone. `git show HEAD:<file> | grep -cF '<your marker>'` prints 1 and `... '<their marker>'` prints 0. The worktree file still holds both: `grep -cF '<their marker>' <file>` prints 1. If your marker is 0 in HEAD, or theirs is present in HEAD, or theirs is gone from the worktree, stop and tell the user. Use `grep -cF` (a fixed string); a marker with `*`, `[` or `.` in it is otherwise read as a pattern and gives false alarms and false passes.
-
-Pick a marker as a whole line of the edit that appears nowhere else in the file: for your edit, a line of yours; for theirs, a line of the other session's edit that your own edit does not contain. An identifier that appears twice per row (in a column and in a link) fails the count on correct data.
-
-Because the worktree is never rewritten, this procedure cannot overwrite a peer's late edit to it. (An older form wrote the mine-only copy into the worktree and restored the both-edits copy afterwards; any peer write inside that window was silently overwritten.)
+```bash
+set -euo pipefail
+f='<file>'                           # repo-relative, no ./
+OLD='<the text your edit replaced>'  # exactly once at HEAD
+NEW='<what your edit made of it>'
+MINE='<a string only your edit adds>'
+THEIRS='<a string only their edit adds>'
+msg='<commit message>'
+export f OLD NEW MINE THEIRS
+base=$(git rev-parse HEAD)
+[ -z "$(git diff --cached --name-only)" ] || { echo "abort: something is already staged" >&2; exit 1; }
+mode=$(git ls-tree "$base" -- "$f" | cut -d' ' -f1)
+[ -n "$mode" ] || { echo "abort: $f is not tracked at HEAD" >&2; exit 1; }
+blob=$(git show "$base:$f" | python3 -I -c 'if 1:
+    import os, sys
+    e, b = os.environb, sys.stdin.buffer.read()
+    w = open(e[b"f"], "rb").read()
+    if e[b"THEIRS"] in b or e[b"THEIRS"] not in w: sys.exit("abort: THEIRS must be in the worktree and not at HEAD")
+    if b.count(e[b"OLD"]) != 1: sys.exit("abort: OLD is not exactly once at HEAD")
+    n = b.replace(e[b"OLD"], e[b"NEW"], 1)
+    if n.count(e[b"MINE"]) != 1 or e[b"THEIRS"] in n: sys.exit("abort: NEW must add MINE once and THEIRS never")
+    if not set(n.split(b"\n")) - set(b.split(b"\n")) <= set(w.split(b"\n")): sys.exit("abort: NEW adds a line the worktree lacks")
+    sys.stdout.buffer.write(n)' | git hash-object -w --stdin)
+undo() { if [ "$(git rev-parse -q --verify ":$f")" = "$blob" ] && [ "$(git rev-parse -q --verify "HEAD:$f")" != "$blob" ]; then git restore --staged -- "$f" || echo "WARN: $f is still staged as $blob; unstage it" >&2; fi; }
+trap undo EXIT
+git update-index --cacheinfo "$mode,$blob,$f"
+[ "$(git diff --cached --name-only -z --no-renames | tr '\0' '\n')" = "$f" ] || { echo "abort: something else got staged" >&2; exit 1; }
+[ "$(git rev-parse HEAD)" = "$base" ] || { echo "abort: HEAD moved; rerun" >&2; exit 1; }
+[ "$(git rev-parse ":$f")" = "$blob" ] || { echo "abort: the index entry is not yours" >&2; exit 1; }
+git commit -q -m "$msg"
+c=$(git rev-parse HEAD)
+[ "$(git rev-parse "$c^") $(git rev-parse "$c:$f")" = "$base $blob" ] || { echo "STOP: HEAD is not your blob on $base; read git log -2 --stat" >&2; exit 1; }
+/usr/bin/grep -qF -- "$THEIRS" "$f" || { echo "STOP: their edit is gone from the worktree" >&2; exit 1; }
+echo "committed $c"
+```
 
 ### 3. Verify and cite what shipped
 
