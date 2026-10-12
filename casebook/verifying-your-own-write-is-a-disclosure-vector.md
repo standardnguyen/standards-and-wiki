@@ -47,7 +47,7 @@ And the class it belongs to has a shape worth naming: **the leak never comes fro
 **Confirm a write with a predicate about your own line, never a window around it.**
 
 ```bash
-grep -c 'the exact line I appended' ~/.profile      # 1 → it landed
+grep -cF 'the exact line I appended' ~/.profile      # 1 → it landed
 tail -1 ~/.profile                                   # only if you appended exactly one line
 ```
 
